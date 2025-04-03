@@ -1,5 +1,31 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: "IBMPlexMonoB";
+    src: url("/public/fonts/IBM_Plex_Mono/IBMPlexMono-SemiBold.ttf") format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBMPlexMono";
+    src: url("/public/fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf") format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBMPlexMonoEL";
+    src: url("/public/fonts/IBM_Plex_Mono/IBMPlexMono-ExtraLight.ttf") format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBMPlexMonoItalic";
+    src: url("/public/fonts/IBM_Plex_Mono/IBMPlexMono-Italic.ttf") format("truetype");
+    font-display: swap;
+}
+
 :root {
-    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: "IBMPlexMonoB", system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
 
@@ -25,19 +51,4 @@ body {
     width: 100%;
     height: 100%;
     background-color: transparent;
-}
-
-#title {
-    position: absolute;
-    display: flex;
-    width: 100%;
-    right: 0;
-    text-align: right;
-}
-
-
-@media (width >=40rem) {
-    #title {
-        width: 20rem;
-    }
 }

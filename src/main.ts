@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as globularShader from "./shaders/orbular.glsl"
+import * as globularShader from "./shaders/orbular.glsl.js"
 
 const width = window.innerWidth
 const height = window.innerHeight
@@ -47,8 +47,7 @@ const material = new THREE.ShaderMaterial({
             value: new THREE.Vector3()
         },
         amplitude: {
-            type: 'f',
-            value: 0
+            value: THREE.FloatType
         }
     },
     vertexShader: vShader,
