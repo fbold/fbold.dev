@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import * as globularShader from "./shaders/orbular.glsl"
 
 const width = window.innerWidth
 const height = window.innerHeight
@@ -17,8 +18,9 @@ document.body.appendChild(renderer.domElement);
 
 const geometry = new THREE.SphereGeometry(Math.max(width, height) / 2, 120, 120);
 
-const vShader = document.getElementById("vertexshader")
-const fShader = document.getElementById("fragmentshader")
+const vShader = globularShader.vertex
+const fShader = globularShader.fragment
+console.log(globularShader.vertex)
 
 var attributes = {
     displacement: {
@@ -49,8 +51,8 @@ const material = new THREE.ShaderMaterial({
             value: 0
         }
     },
-    vertexShader: vShader.textContent,
-    fragmentShader: fShader.textContent
+    vertexShader: vShader,
+    fragmentShader: fShader
 })
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
