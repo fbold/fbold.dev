@@ -40,7 +40,7 @@
     float sindotval = 1.15 * sin(asindotval * M_PI/4.0);
     float level = pow(max(sindotval, 0.0), 15.0);
 
-    float wobble = 10.0 * sin(displacement + amplitude);
+    float wobble = 5.0 * sin(displacement + amplitude);
   
   vec3 newPosition = position +
     normal * vec3((displacement+wobble) * level);
@@ -60,7 +60,7 @@
     
       // calc the dot product and clamp
       // 0 -> 1 rather than -1 -> 1
-      vec3 light = vec3(0.0, 0.0, 2.0);
+      vec3 light = vec3(-0.2, -0.2, 2.0);
     
       // ensure it's normalized
       light = normalize(light);
