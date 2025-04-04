@@ -5,7 +5,7 @@ const width = window.innerWidth
 const height = window.innerHeight
 const scene = new THREE.Scene();
 //const camera = new THREE.OrthographicCamera(width / - 2, width / 2, height / 2, height / - 2, 1, 1000);
-const camera = new THREE.PerspectiveCamera(50, width / height, 1, 10000);
+const camera = new THREE.PerspectiveCamera(30, width / height, 1, 10000);
 camera.position.z = 1000
 // camera.position.y = 10
 // camera.position.y = 10
@@ -56,15 +56,11 @@ const material = new THREE.ShaderMaterial({
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
-// Create a vector to store the normalized device coordinates
-//const NDC = new THREE.Vector3(-width / 2, -height / 2, 0); // 0.5 is the depth (z)
-// const ndcNear = new THREE.Vector3(-1, -1, 0.5); // 0.5 is the depth (z)
-// const ndcFar = new THREE.Vector3(-1, -1, 1); // 0.5 is the depth (z)
-//
-// const radius = cube.geometry.parameters.radius / 4
-// ndcNear.unproject(camera).add(camera.position).add(new THREE.Vector3(radius, radius, 0))
-// ndcFar.unproject(camera).add(camera.position).add(new THREE.Vector3(radius, radius, 0))
-
+const geometryRing = new THREE.TorusGeometry(200, 10, 20, 20);
+const ring = new THREE.Mesh(geometryRing, new THREE.MeshBasicMaterial({ color: "rgba(1,0,0,1)" }));
+// ring.rotateX(90)
+// ring.rotateY(90)
+scene.add(ring)
 
 // Using this depth will place it at 0 (within floating error)
 // Since camera is at z=1000 ---- this really doesn't matter though
@@ -86,16 +82,19 @@ const dir = ndc.sub(camera.position).normalize();
 // that bottom left edge of frustum according to depth
 const worldPos = camera.position.clone().add(dir.multiplyScalar(depth));
 
-const radius = 0//cube.geometry.parameters.radius / 5
-// Adjust object scale to maintain screen size
+const radius = cube.geometry.parameters.radius / 4
+// Adjust object scale to maintain screen siz10
 // see this: https://discussions.unity.com/t/calculating-perspective-camera-size-at-depth/60559
 // and this chat: https://chatgpt.com/share/67eea440-74c4-800f-b646-1e8182151ed1
+// and this: https://threejs.org/manual/#en/faq
 const worldHeightAtDepth = 2 * depth * Math.tan(0.5 * camera.fov * Math.PI / 180);
 const pixelsToWorld = worldHeightAtDepth / Math.max(width, height);
 console.log("WorldPos", worldPos)
 console.log("Scale", pixelsToWorld)
 cube.position.copy(worldPos).add(new THREE.Vector3(radius * pixelsToWorld, radius * pixelsToWorld, 0));
 cube.scale.set(pixelsToWorld, pixelsToWorld, pixelsToWorld);
+ring.position.copy(worldPos).add(new THREE.Vector3(cube.geometry.parameters.radius * pixelsToWorld, cube.geometry.parameters.radius * pixelsToWorld, 0));
+ring.scale.set(pixelsToWorld, pixelsToWorld, pixelsToWorld);
 
 
 let sphereToPointer = new THREE.Vector3()
@@ -110,42 +109,38 @@ let vec = new THREE.Vector3(); // create once and reuse
 let pos = new THREE.Vector3(); // create once and reuse
 
 function windowToWorld(event) {
+    console.log(event.clientX / width)
     vec.set(
         (event.clientX / width) * 2 - 1,
         - (event.clientY / height) * 2 + 1,
-        0.5,
+        1,
     );
+    console.log(vec)
 
     vec.unproject(camera);
     vec.sub(camera.position).normalize();
-    pos.copy(camera.position).add(vec.multiplyScalar(0.6 * depth));
+    pos.copy(camera.position).add(vec.multiplyScalar(0.85 * depth));
     return pos
 }
 
 console.log(camera.position)
 
 let frame = 0
-// let alpha = 0.1
-// const pos = new THREE.Vector3()
-// const v1 = new THREE.Vector3()
-//
-// let skip = 0
+let ringPos = new THREE.Vector3()
 
 function animate() {
-    // alpha += 0.0001
-    // skip++
-    //
-    // v1.copy(ndcNear)
-    // pos.copy(v1.lerp(ndcFar, alpha))
-    // cube.position.copy(pos)
-    //
-    // if (skip % 60 === 0)
-    //     console.log(alpha, pos)
-
-    frame += 0.03
+    frame += 0.01
     geometry.setAttribute("displacement", new THREE.BufferAttribute(positions, 1))
     material.uniforms.pointer_direction.value = sphereToPointer;
-    material.uniforms.amplitude.value = frame;
+    material.uniforms.amplitude.value = frame * 5;
+
+
+    ringPos.copy(cube.position)
+    ringPos.add(sphereToPointer.clone().normalize().multiplyScalar(1.2 * cube.geometry.parameters.radius * pixelsToWorld))
+    // ringPos.multiplyScalar(cube.geometry.parameters.radius * pixelsToWorld)
+    ring.lookAt(cube.position)
+    ring.position.copy(ringPos)
+
     renderer.render(scene, camera);
 
 }
