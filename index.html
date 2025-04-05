@@ -10,12 +10,19 @@
 </head>
 
 <body>
-    <div id="root">
-        <div id="title" class="right-0 text-right w-full text-lg flex flex-col p-12 md:p-20">
-            <h1 class="text-5xl text-red-800">
-                Fred Old
-            </h1>
-            <h2 class="font-[IBMPlexMonoItalic]">fbold.dev</h2>
+    <div id="root" class="absolute">
+        <h1 class="text-8xl text-red-700 absolute p-10">
+            <span class="text-white">Hello,</span> I'm Fred
+        </h1>
+        <div id="title" class="right-0 text-right w-full h-full text-lg flex flex-col p-10 md:px-12">
+            <ul class="text-7xl cursor-pointer flex flex-col gap-2">
+                <li class="hover:text-red-700 transition-colors">PROJECTS</li>
+                <li class="hover:text-red-700 transition-colors">CONTACT</li>
+                <li class="hover:text-red-700 transition-colors">SOCIALS</li>
+            </ul>
+            <h2 class="font-[Absans] italic text-4xl place-self-end mt-auto">fbold.dev</h2>
+            <a class="text-lg hover:cursor-pointer hover:underline" href="https://www.collletttivo.it/typefaces/absans"
+                target="_blank">what is this beautiful typeface?</a>
         </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

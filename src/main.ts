@@ -115,9 +115,11 @@ async function init() {
 
     // TEXT
     //const textGeometry = new TextGeometry("==============================", {
-    const textGeometry = new TextGeometry("00000000000000000000000000000000000000000000000000000000", {
+    // const textGeometry = new TextGeometry("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", {
+    const textGeometry = new TextGeometry("<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>", {
+        //const textGeometry = new TextGeometry("00000000000000000000000000000000000000000000000000000000", {
         font: fonts.ibm,
-        size: 3,
+        size: 5,
         depth: 0.4,
         bevelEnabled: true,
         bevelSegments: 1,
@@ -165,10 +167,13 @@ async function init() {
     // })
 
     const text = new THREE.Mesh(textGeometry, tMaterial);
-    text.scale.set(1, 1, 1);
     text.position.copy(worldPos).add(new THREE.Vector3(radius * pixelsToWorld, radius * pixelsToWorld, 0));
+    text.scale.set(0.8, 0.8, 0.8)
 
     scene.add(text)
+    const newText = text.clone()
+    // newText.scale.set(0.4, 0.4, 0.4)
+    scene.add(newText)
 
 
     let sphereToPointer = new THREE.Vector3()
@@ -190,19 +195,33 @@ async function init() {
         material.uniforms.amplitude.value = frame * 5;
 
 
-        tMaterial.uniforms.time.value = frame;
         ringPos.copy(cube.position)
         ringPos.add(sphereToPointer.clone().normalize().multiplyScalar(1.4 * radius * pixelsToWorld))
         ring.lookAt(cube.position)
         ring.position.copy(ringPos)
+
+        // tMaterial.uniforms.time.value = frame;
+        text.material.uniforms.time.value = frame;
         text.lookAt(cube.position)
         text.rotateOnAxis(new THREE.Vector3(1, 0, 0), -0.5 * Math.PI)
         text.position.copy(ringPos)
+
+
+        newText.material.uniforms.time.value = frame * 0.1;
+        newText.lookAt(cube.position)
+        newText.rotateOnAxis(new THREE.Vector3(1, 0, 0), -0.5 * Math.PI)
+        textPos.copy(cube.position)
+        textPos.add(sphereToPointer.clone().normalize().multiplyScalar(1.2 * radius * pixelsToWorld))
+        newText.position.copy(textPos)
 
         renderer.render(scene, camera);
 
     }
     //renderer.render(scene, camera);
+
+}
+
+function addRing() {
 
 }
 
@@ -230,7 +249,7 @@ async function loadFonts(): Promise<Fonts> {
     const loader = new FontLoader();
 
     const fonts: Fonts = {}
-    const font = await loader.loadAsync('/public/fonts/IBMPlexMono-LightItalic.json', function(font) {
+    const font = await loader.loadAsync('/public/fonts/Absans_Regular.json', function(font) {
     });
 
     fonts.ibm = font

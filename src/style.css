@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
 @font-face {
+    font-family: "Absans";
+    src: url("/public/fonts/CLT Absans/web/Absans-Regular.woff2") format("woff2");
+    font-display: swap;
+}
+
+@font-face {
     font-family: "IBMPlexMonoB";
     src: url("/public/fonts/IBM_Plex_Mono/IBMPlexMono-SemiBold.ttf") format("truetype");
     font-display: swap;
@@ -25,7 +31,7 @@
 }
 
 :root {
-    font-family: "IBMPlexMonoB", system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: "Absans", system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
 
