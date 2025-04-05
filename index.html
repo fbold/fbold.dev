@@ -11,11 +11,14 @@
 
 <body>
     <div id="root" class="absolute">
-        <h1 class="text-8xl text-red-700 absolute p-10">
+        <h1 class="hidden md:block text-8xl text-red-700 absolute p-10">
             <span class="text-white">Hello,</span> I'm Fred
         </h1>
-        <div id="title" class="right-0 text-right w-full h-full text-lg flex flex-col p-10 md:px-12">
-            <ul class="text-7xl cursor-pointer flex flex-col gap-2">
+        <div id="title" class="right-0 text-right w-full h-full text-lg flex flex-col p-6 md:py-10 md:px-12">
+            <h1 class="md:hidden text-5xl text-red-700 ">
+                <span class="text-white">Hello,</span> I'm Fred
+            </h1>
+            <ul class="text-4xl md:text-7xl cursor-pointer flex flex-col gap-2 mt-6 md:mt-0">
                 <li class="hover:text-red-700 transition-colors">PROJECTS</li>
                 <li class="hover:text-red-700 transition-colors">CONTACT</li>
                 <li class="hover:text-red-700 transition-colors">SOCIALS</li>
