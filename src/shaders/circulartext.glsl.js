@@ -5,6 +5,7 @@ varying vec3 vNormal;
 
 uniform float length;
 uniform float radius;
+uniform float meshStart;
 uniform float time;
 attribute float xPos;
 
@@ -15,12 +16,16 @@ void main() {
 
     // TODO cand make this ork ith letter width ith monospace
     // or at least sort out the lack of spacing on the wrap
-    float offset = time * 0.5;
-    float z = cos(2.0*M_PI*xPos/length + offset)*radius;
-    float x = sin(2.0*M_PI*xPos/length + offset)*radius;
+    // fixes loss-of-depth issue with second term, meshStart is provided
+    // as uniform, just z component of first vertex then transform around circle
+    float offset = time * -0.7;
+    float x = sin(2.0*M_PI*xPos/length + offset)*(radius) + (position.z - meshStart)*sin(2.0*M_PI*xPos/length + offset);
+    float z = cos(2.0*M_PI*xPos/length + offset)*(radius) + (position.z - meshStart)*cos(2.0*M_PI*xPos/length + offset);
+    float y = sin(2.0*M_PI*offset+2.0*M_PI*position.x/20.0)*1.0+position.y;
 
-    vec3 newPosition = vec3(x, position.y, z);
+    vec3 newPosition = vec3(x, y, z);
     //vec3 newPosition = position + vec3(0, xPos, 0);
+    //vec3 newPosition = position;// + vec3(x, 0, z);
 
 
     gl_Position = projectionMatrix *

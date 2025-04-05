@@ -76,7 +76,7 @@ async function init() {
     // RING
     const geometryRing = new THREE.TorusGeometry(sRadius / 5, 5 * (sRadius / 1000), 20 * sRadius / 500, 20);
     const ring = new THREE.Mesh(geometryRing, new THREE.MeshBasicMaterial({ color: new THREE.Color(0x9f0712) }));
-    scene.add(ring)
+    // scene.add(ring)
     scene.add(cube)
 
     // Using this depth will place it at 0 (within floating error)
@@ -114,17 +114,21 @@ async function init() {
 
 
     // TEXT
-    const textGeometry = new TextGeometry("~~~~~~~~~~~~~~~~~~~~~~~~~~~~", {
+    //const textGeometry = new TextGeometry("==============================", {
+    const textGeometry = new TextGeometry("00000000000000000000000000000000000000000000000000000000", {
         font: fonts.ibm,
-        size: 7,
-        depth: 0.1,
+        size: 3,
+        depth: 0.4,
         bevelEnabled: true,
         bevelSegments: 1,
         bevelSize: 0,
-        bevelThickness: 1,
+        bevelThickness: 0.1,
     })
     const tMaterial = new THREE.ShaderMaterial({
         uniforms: {
+            meshStart: {
+                value: THREE.FloatType,
+            },
             length: {
                 value: THREE.FloatType,
             },
@@ -138,13 +142,13 @@ async function init() {
         vertexShader: textShader.vertex,
         fragmentShader: textShader.fragment
     })
+    // want to pass through the x position of every vertex
+    // so it can be used with total length to find angular position
     const tVerts = textGeometry.getAttribute("position").count;
     textGeometry.computeBoundingBox()
     const txValues = []
     const vPos = textGeometry.getAttribute("position")
     for (let v = 0; v < tVerts; v++) {
-        if (v % 100 === 0)
-            console.log(v, vPos.getX(v))
         txValues.push(vPos.getX(v));
     }
     const tX = new Float32Array(txValues);
@@ -152,7 +156,7 @@ async function init() {
     textGeometry.boundingBox.getSize(boundingBox)
     tMaterial.uniforms.length.value = boundingBox.x
     tMaterial.uniforms.radius.value = radius / 10
-    console.log(boundingBox.x)
+    tMaterial.uniforms.meshStart.value = vPos.getZ(0)
 
     console.log(tX)
     textGeometry.setAttribute("xPos", new THREE.Float32BufferAttribute(tX, 1))
@@ -169,7 +173,7 @@ async function init() {
 
     let sphereToPointer = new THREE.Vector3()
     window.addEventListener("mousemove", (e) => {
-        const worldPos = windowToWorld(e, depth - 1.1 * radius / 4)
+        const worldPos = windowToWorld(e, depth - radius / 5)
         // sphere pos to mouse pos
         sphereToPointer = worldPos.sub(cube.position)
     })
