@@ -2,12 +2,13 @@ import * as THREE from 'three';
 import * as globularShader from "./shaders/orbular.glsl.js"
 import * as textShader from "./shaders/circulartext.glsl.js"
 import { Font, FontLoader, TextGeometry } from 'three/examples/jsm/Addons.js';
+import { createTextRing } from './js/sphere-focus-ring.js';
+import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 
 const width = window.innerWidth
 const height = window.innerHeight
 const scene = new THREE.Scene();
-//const camera = new THREE.OrthographicCamera(width / - 2, width / 2, height / 2, height / - 2, 1, 1000);
 const camera = new THREE.PerspectiveCamera(30, width / height, 1, 10000);
 const renderer = new THREE.WebGLRenderer();
 
@@ -15,41 +16,25 @@ window.addEventListener("resize", () => {
     renderer.setSize(window.innerWidth, window.innerHeight)
 })
 
-
-// initialize the scene, set all initial positions
-// add event listeners
-// create geometries and attach meshes
-//
+// TODO synchronously loading fonts, should change
 const fonts = await loadFonts()//.then(fonts => {
-//create assets requiring fonts
 
-// });
 camera.position.z = 1000
-// camera.position.y = 10
-// camera.position.y = 10
-
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio)
 renderer.setAnimationLoop(animate);
 document.body.appendChild(renderer.domElement);
 
 
 // SPHERE
-const sRadius = width / 2
+const sRadius = height > width ? width : Math.min(width / 1.5, height)
 const geometry = new THREE.SphereGeometry(sRadius, width / 10, width / 10);
 
-const vShader = globularShader.vertex
-const fShader = globularShader.fragment
+const vShaderSphere = globularShader.vertex
+const fShaderSphere = globularShader.fragment
 
-var attributes = {
-    displacement: {
-        type: 'f', // a float
-        value: [] // an empty array
-    }
-}
-
-let verts = geometry.getAttribute("position").count;
-let values =
-    attributes.displacement.value;
+const verts = geometry.getAttribute("position").count;
+const values = []
 
 for (let v = 0; v < verts; v++) {
     values.push((0.5 + Math.min(Math.random(), 1)) * sRadius * 0.1);
@@ -66,16 +51,16 @@ const material = new THREE.ShaderMaterial({
             value: THREE.FloatType
         }
     },
-    vertexShader: vShader,
-    fragmentShader: fShader
+    vertexShader: vShaderSphere,
+    fragmentShader: fShaderSphere
 })
-const cube = new THREE.Mesh(geometry, material);
 
-// RING
-const geometryRing = new THREE.TorusGeometry(sRadius / 5, 5 * (sRadius / 1000), 20 * sRadius / 500, 20);
-// scene.add(ring)
-scene.add(cube)
+const sphere = new THREE.Mesh(geometry, material);
+scene.add(sphere)
 
+/////////////////////////////////
+// POSITION SPHERE IN CORNER
+/////////////////////////////////
 // Using this depth will place it at 0 (within floating error)
 // Since camera is at z=1000 ---- this really doesn't matter though
 // as it is compensated for below
@@ -96,121 +81,100 @@ const dir = ndc.sub(camera.position).normalize();
 // that bottom left edge of frustum according to depth
 const worldPos = camera.position.clone().add(dir.multiplyScalar(depth));
 
-const radius = cube.geometry.parameters.radius
+const radius = sphere.geometry.parameters.radius
 // Adjust object scale to maintain screen siz10
 // see this: https://discussions.unity.com/t/calculating-perspective-camera-size-at-depth/60559
 // and this chat: https://chatgpt.com/share/67eea440-74c4-800f-b646-1e8182151ed1
 // and this: https://threejs.org/manual/#en/faq
 const worldHeightAtDepth = 2 * depth * Math.tan(0.5 * camera.fov * Math.PI / 180);
 const pixelsToWorld = worldHeightAtDepth / Math.max(width, height);
-cube.position.copy(worldPos).add(new THREE.Vector3(radius / 4 * pixelsToWorld, radius / 4 * pixelsToWorld, 0));
-cube.scale.set(pixelsToWorld, pixelsToWorld, pixelsToWorld);
+sphere.position.copy(worldPos).add(new THREE.Vector3(radius / 4 * pixelsToWorld - (height > width ? radius / 4 : 0), radius / 4 * pixelsToWorld, 0));
+sphere.scale.set(pixelsToWorld, pixelsToWorld, pixelsToWorld);
 
+/////////////////////////////////
 // TEXT
-//const textGeometry = new TextGeometry("==============================", {
-// const textGeometry = new TextGeometry("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", {
-const textGeometry = new TextGeometry("<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>", {
-    //const textGeometry = new TextGeometry("00000000000000000000000000000000000000000000000000000000", {
+/////////////////////////////////
+
+const textRingAContent = "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
+const textRingA = createTextRing({
+    content: textRingAContent,
     font: fonts.ibm,
-    size: 8,
-    depth: 0.4,
-    bevelEnabled: true,
-    bevelSegments: 1,
-    bevelSize: 0,
-    bevelThickness: 0.1,
+    position: worldPos,
+    radius: radius / 4.5,
+    pixelsToWorld,
 })
-const tMaterial = new THREE.ShaderMaterial({
-    uniforms: {
-        meshStart: {
-            value: THREE.FloatType,
-        },
-        length: {
-            value: THREE.FloatType,
-        },
-        radius: {
-            value: THREE.FloatType,
-        },
-        time: {
-            value: THREE.FloatType,
-        }
-    },
-    vertexShader: textShader.vertex,
-    fragmentShader: textShader.fragment
+scene.add(textRingA)
+
+const textRingBContent = "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
+const textRingB = createTextRing({
+    content: textRingBContent,
+    font: fonts.ibm,
+    position: worldPos,
+    radius: radius / 3,
+    pixelsToWorld,
 })
-// want to pass through the x position of every vertex
-// so it can be used with total length to find angular position
-const tVerts = textGeometry.getAttribute("position").count;
-textGeometry.computeBoundingBox()
-const txValues = []
-const vPos = textGeometry.getAttribute("position")
-for (let v = 0; v < tVerts; v++) {
-    txValues.push(vPos.getX(v));
-}
-const tX = new Float32Array(txValues);
-const boundingBox = new THREE.Vector3()
-textGeometry.boundingBox.getSize(boundingBox)
-tMaterial.uniforms.length.value = boundingBox.x
-tMaterial.uniforms.radius.value = pixelsToWorld * radius / 3
-tMaterial.uniforms.meshStart.value = vPos.getZ(0)
-
-console.log(tX)
-textGeometry.setAttribute("xPos", new THREE.Float32BufferAttribute(tX, 1))
-// textGeometry.morphAttributes.position.map((ba, index) => {
-//     ba.setX(index, index)
-// })
-
-const text = new THREE.Mesh(textGeometry, tMaterial);
-text.position.copy(worldPos).add(new THREE.Vector3(radius * pixelsToWorld, radius * pixelsToWorld, 0));
-text.scale.set(0.8, 0.8, 0.8)
-
-scene.add(text)
-const newText = text.clone()
-// newText.scale.set(0.4, 0.4, 0.4)
-scene.add(newText)
+scene.add(textRingB)
+// const newText = text.clone()
+// scene.add(newText)
 
 
 let sphereToPointer = new THREE.Vector3()
 window.addEventListener("mousemove", (e) => {
     const worldPos = windowToWorld(e, depth - radius / 5)
     // sphere pos to mouse pos
-    sphereToPointer = worldPos.sub(cube.position)
+    sphereToPointer = worldPos.sub(sphere.position)
 })
 
 // RENDERING AND ANIMATING
 let frame = 0
-let ringPos = new THREE.Vector3()
-let textPos = new THREE.Vector3()
+let textPosA = new THREE.Vector3()
+let textPosB = new THREE.Vector3()
 let displacementBuffer = new THREE.BufferAttribute(positions, 1)
 
-const textRotationInner = new THREE.Vector3(1, 0, 0)
-const textRotationOuter = new THREE.Vector3(1, 0, 0)
+const textRotationA = new THREE.Vector3(1, 0, 0)
+const textRotationB = new THREE.Vector3(-1, 0, 0)
+
+const stats = new Stats()
+// the number will decide which information will be displayed
+// 0 => FPS Frames rendered in the last second. The higher the number the better.
+// 1 => MS Milliseconds needed to render a frame. The lower the number the better.
+// 2 => MB MBytes of allocated memory. (Run Chrome with --enable-precise-memory-info)
+// 3 => CUSTOM User-defined panel support.
+stats.showPanel(0)
+
+document.body.appendChild(stats.dom)
+const clock = new THREE.Clock(true)
+let delta = 0
 
 function animate() {
-    frame += 0.01
+    stats.begin()
+
+    delta = clock.getDelta()
+    frame += 1 * delta
     geometry.setAttribute("displacement", displacementBuffer)
     material.uniforms.pointer_direction.value = sphereToPointer;
     material.uniforms.amplitude.value = frame * 5;
 
 
-    ringPos.copy(cube.position)
-    ringPos.add(sphereToPointer.clone().normalize().multiplyScalar(1.4 * radius * pixelsToWorld))
+    textPosA.copy(sphere.position)
+    textPosA.add(sphereToPointer.clone().normalize().multiplyScalar(1.4 * radius * pixelsToWorld))
+    // @ts-ignore
+    textRingA.material.uniforms.time.value = frame;
+    textRingA.lookAt(sphere.position)
+    textRingA.rotateOnAxis(textRotationA, 0.5 * Math.PI)
+    textRingA.position.copy(textPosA)
 
-    // tMaterial.uniforms.time.value = frame;
-    text.material.uniforms.time.value = frame;
-    text.lookAt(cube.position)
-    text.rotateOnAxis(textRotationInner, 0.5 * Math.PI)
-    text.position.copy(ringPos)
+    textPosB.copy(sphere.position)
+    textPosB.add(sphereToPointer.clone().normalize().multiplyScalar(1.2 * radius * pixelsToWorld))
+    // @ts-ignore
+    textRingB.material.uniforms.time.value = frame;
+    textRingB.lookAt(sphere.position)
+    textRingB.rotateOnAxis(textRotationB, 0.5 * Math.PI)
+    textRingB.position.copy(textPosB)
 
-
-    newText.material.uniforms.time.value = frame;
-    newText.lookAt(cube.position)
-    newText.rotateOnAxis(textRotationOuter, -0.5 * Math.PI)
-    textPos.copy(cube.position)
-    textPos.add(sphereToPointer.clone().normalize().multiplyScalar(1.2 * radius * pixelsToWorld))
-    newText.position.copy(textPos)
+    stats.end()
 
     renderer.render(scene, camera);
-
 }
 
 
