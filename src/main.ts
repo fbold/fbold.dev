@@ -51,6 +51,7 @@ const verts = geometry.getAttribute("position").count;
 const values = []
 
 for (let v = 0; v < verts; v++) {
+    // displacement values for each vertex
     values.push((0.5 + Math.min(Math.random(), 1)) * sRadius * 0.1);
 }
 const positions = new Float32Array(values);
@@ -63,7 +64,10 @@ const material = new THREE.ShaderMaterial({
         },
         amplitude: {
             value: THREE.FloatType
-        }
+        },
+        radius: {
+            value: THREE.FloatType
+        },
     },
     vertexShader: vShaderSphere,
     fragmentShader: fShaderSphere
@@ -104,7 +108,7 @@ const worldHeightAtDepth = 2 * depth * Math.tan(0.5 * camera.fov * Math.PI / 180
 const pixelsToWorld = worldHeightAtDepth / height;
 sphere.position.copy(worldPos).add(new THREE.Vector3(radius / 4 * pixelsToWorld - sOffsetX * pixelsToWorld, radius / 4 * pixelsToWorld, 0));
 sphere.scale.set(pixelsToWorld, pixelsToWorld, pixelsToWorld);
-
+sphere.material.uniforms.radius.value = sRadius;
 /////////////////////////////////
 // TEXT
 /////////////////////////////////
@@ -119,7 +123,7 @@ const textRingA = createTextRing({
 })
 scene.add(textRingA)
 
-const textRingBContent = "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
+const textRingBContent = "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
 const textRingB = createTextRing({
     content: textRingBContent,
     font: fonts.ibm,
@@ -129,7 +133,7 @@ const textRingB = createTextRing({
 })
 scene.add(textRingB)
 
-const textRingCContent = "==========================================="
+const textRingCContent = "<><><><><><><><><><><><><><><><><><><><><><>"
 const textRingC = createTextRing({
     content: textRingCContent,
     font: fonts.ibm,
@@ -144,9 +148,10 @@ scene.add(textRingC)
 
 let sphereToPointer = new THREE.Vector3()
 window.addEventListener("mousemove", (e) => {
-    const worldPos = windowToWorld(e, depth - radius / 5)
+    const worldPos = windowToWorld(e, depth - radius / 7)
     // sphere pos to mouse pos
     sphereToPointer = worldPos.sub(sphere.position)
+    console.log(sphereToPointer)
 })
 
 
@@ -172,36 +177,40 @@ let displacementBuffer = new THREE.BufferAttribute(positions, 1)
 const textRotationA = new THREE.Vector3(1, 0, 0)
 const textRotationB = new THREE.Vector3(-1, 0, 0)
 const textRotationC = new THREE.Vector3(1, 0, 0)
+
+let extrusion = 0;
+
 function animate() {
     stats.begin()
+
+    extrusion = Math.min(sphereToPointer.length() / sRadius, 1);
 
     delta = clock.getDelta()
     frame += 1 * delta
     geometry.setAttribute("displacement", displacementBuffer)
     material.uniforms.pointer_direction.value = sphereToPointer;
-    material.uniforms.amplitude.value = frame * 5;
-
+    material.uniforms.amplitude.value += delta * 5 * Math.min(0.6 + extrusion, 1);
 
     textPosA.copy(sphere.position)
-    textPosA.add(sphereToPointer.clone().normalize().multiplyScalar(1.2 * radius * pixelsToWorld))
+    textPosA.add(sphereToPointer.clone().normalize().multiplyScalar((0.99 + extrusion * 0.2) * radius * pixelsToWorld))
     // @ts-ignore
-    textRingA.material.uniforms.time.value = frame;
+    textRingA.material.uniforms.time.value += delta * (0.2 + extrusion);
     textRingA.lookAt(sphere.position)
     textRingA.rotateOnAxis(textRotationA, 0.5 * Math.PI)
     textRingA.position.copy(textPosA)
 
     textPosB.copy(sphere.position)
-    textPosB.add(sphereToPointer.clone().normalize().multiplyScalar(1.3 * radius * pixelsToWorld))
+    textPosB.add(sphereToPointer.clone().normalize().multiplyScalar((0.99 + extrusion * 0.3) * radius * pixelsToWorld))
     // @ts-ignore
-    textRingB.material.uniforms.time.value = frame;
+    textRingB.material.uniforms.time.value += delta * (0.2 + extrusion);
     textRingB.lookAt(sphere.position)
     textRingB.rotateOnAxis(textRotationB, 0.5 * Math.PI)
     textRingB.position.copy(textPosB)
 
     textPosC.copy(sphere.position)
-    textPosC.add(sphereToPointer.clone().normalize().multiplyScalar(1.45 * radius * pixelsToWorld))
+    textPosC.add(sphereToPointer.clone().normalize().multiplyScalar((0.99 + extrusion * 0.45) * radius * pixelsToWorld))
     // @ts-ignore
-    textRingC.material.uniforms.time.value = frame;
+    textRingC.material.uniforms.time.value += delta * (0.2 + extrusion);
     textRingC.lookAt(sphere.position)
     textRingC.rotateOnAxis(textRotationC, 0.5 * Math.PI)
     textRingC.position.copy(textPosC)

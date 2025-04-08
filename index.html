@@ -11,21 +11,18 @@
 
 <body>
     <div id="root" class="absolute">
-        <h1 class="hidden md:block text-8xl text-red-700 absolute p-10">
-            <span class="text-white">Hello,</span> I'm Fred
-        </h1>
-        <div id="title" class="right-0 text-right w-full h-full text-lg flex flex-col p-6 md:py-10 md:px-12">
-            <h1 class="md:hidden text-5xl text-red-700 ">
-                <span class="text-white">Hello,</span> I'm Fred
-            </h1>
-            <ul class="text-4xl md:text-7xl cursor-pointer flex flex-col gap-2 mt-6 md:mt-0">
+        <div id="title" class="relative right-0 text-right w-full h-full text-lg p-6 md:py-10 md:px-12">
+            <ul class="float-right top-0 right-0 text-4xl md:text-7xl cursor-pointer flex flex-col gap-2 w-min">
                 <li class="hover:text-red-700 transition-colors">PROJECTS</li>
                 <li class="hover:text-red-700 transition-colors">CONTACT</li>
                 <li class="hover:text-red-700 transition-colors">SOCIALS</li>
             </ul>
-            <h2 class="font-[Absans] italic text-4xl place-self-end mt-auto">fbold.dev</h2>
-            <a class="text-lg hover:cursor-pointer hover:underline" href="https://www.collletttivo.it/typefaces/absans"
-                target="_blank">what is this beautiful typeface?</a>
+            <div class="absolute bottom-4 left-4 text-black text-left">
+                <h2 class="font-[Absans] italic text-4xl place-self-end mt-auto">fbold.dev</h2>
+                <a class="hidden text-lg hover:cursor-pointer hover:underline"
+                    href="https://www.collletttivo.it/typefaces/absans" target="_blank">what is this beautiful
+                    typeface?</a>
+            </div>
         </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
