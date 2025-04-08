@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import * as globularShader from "./shaders/orbular.glsl.js"
-import * as textShader from "./shaders/circulartext.glsl.js"
-import { Font, FontLoader, TextGeometry } from 'three/examples/jsm/Addons.js';
+import { Font, FontLoader } from 'three/examples/jsm/Addons.js';
 import { createTextRing } from './js/sphere-focus-ring.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
@@ -27,8 +26,23 @@ document.body.appendChild(renderer.domElement);
 
 
 // SPHERE
-const sRadius = height > width ? width : Math.min(width / 1.5, height)
-const geometry = new THREE.SphereGeometry(sRadius, width / 10, width / 10);
+const mobile = width / height <= 0.6
+console.log("mobile", mobile)
+let sRadius = height / 2
+let sOffsetX = 0
+if (mobile) {
+    sRadius = (0.45 * height)
+    sOffsetX = 0.5 * width
+} else {
+    sRadius = Math.min(0.6 * width, 0.6 * height)
+    console.log("width, height")
+    console.log(width, height)
+    console.log(0.6 * width, 0.7 * height)
+    sOffsetX = 0
+}
+console.log(sRadius, sOffsetX)
+
+const geometry = new THREE.SphereGeometry(sRadius, sRadius / 5, sRadius / 5);
 
 const vShaderSphere = globularShader.vertex
 const fShaderSphere = globularShader.fragment
@@ -87,8 +101,8 @@ const radius = sphere.geometry.parameters.radius
 // and this chat: https://chatgpt.com/share/67eea440-74c4-800f-b646-1e8182151ed1
 // and this: https://threejs.org/manual/#en/faq
 const worldHeightAtDepth = 2 * depth * Math.tan(0.5 * camera.fov * Math.PI / 180);
-const pixelsToWorld = worldHeightAtDepth / Math.max(width, height);
-sphere.position.copy(worldPos).add(new THREE.Vector3(radius / 4 * pixelsToWorld - (height > width ? radius / 4 : 0), radius / 4 * pixelsToWorld, 0));
+const pixelsToWorld = worldHeightAtDepth / height;
+sphere.position.copy(worldPos).add(new THREE.Vector3(radius / 4 * pixelsToWorld - sOffsetX * pixelsToWorld, radius / 4 * pixelsToWorld, 0));
 sphere.scale.set(pixelsToWorld, pixelsToWorld, pixelsToWorld);
 
 /////////////////////////////////
@@ -100,7 +114,7 @@ const textRingA = createTextRing({
     content: textRingAContent,
     font: fonts.ibm,
     position: worldPos,
-    radius: radius / 4.5,
+    radius: radius / 3,
     pixelsToWorld,
 })
 scene.add(textRingA)
@@ -110,10 +124,20 @@ const textRingB = createTextRing({
     content: textRingBContent,
     font: fonts.ibm,
     position: worldPos,
-    radius: radius / 3,
+    radius: radius / 4.5,
     pixelsToWorld,
 })
 scene.add(textRingB)
+
+const textRingCContent = "==========================================="
+const textRingC = createTextRing({
+    content: textRingCContent,
+    font: fonts.ibm,
+    position: worldPos,
+    radius: radius / 8,
+    pixelsToWorld,
+})
+scene.add(textRingC)
 // const newText = text.clone()
 // scene.add(newText)
 
@@ -125,15 +149,8 @@ window.addEventListener("mousemove", (e) => {
     sphereToPointer = worldPos.sub(sphere.position)
 })
 
+
 // RENDERING AND ANIMATING
-let frame = 0
-let textPosA = new THREE.Vector3()
-let textPosB = new THREE.Vector3()
-let displacementBuffer = new THREE.BufferAttribute(positions, 1)
-
-const textRotationA = new THREE.Vector3(1, 0, 0)
-const textRotationB = new THREE.Vector3(-1, 0, 0)
-
 const stats = new Stats()
 // the number will decide which information will be displayed
 // 0 => FPS Frames rendered in the last second. The higher the number the better.
@@ -143,9 +160,18 @@ const stats = new Stats()
 stats.showPanel(0)
 
 document.body.appendChild(stats.dom)
+
 const clock = new THREE.Clock(true)
 let delta = 0
+let frame = 0
+let textPosA = new THREE.Vector3()
+let textPosB = new THREE.Vector3()
+let textPosC = new THREE.Vector3()
+let displacementBuffer = new THREE.BufferAttribute(positions, 1)
 
+const textRotationA = new THREE.Vector3(1, 0, 0)
+const textRotationB = new THREE.Vector3(-1, 0, 0)
+const textRotationC = new THREE.Vector3(1, 0, 0)
 function animate() {
     stats.begin()
 
@@ -157,7 +183,7 @@ function animate() {
 
 
     textPosA.copy(sphere.position)
-    textPosA.add(sphereToPointer.clone().normalize().multiplyScalar(1.4 * radius * pixelsToWorld))
+    textPosA.add(sphereToPointer.clone().normalize().multiplyScalar(1.2 * radius * pixelsToWorld))
     // @ts-ignore
     textRingA.material.uniforms.time.value = frame;
     textRingA.lookAt(sphere.position)
@@ -165,12 +191,20 @@ function animate() {
     textRingA.position.copy(textPosA)
 
     textPosB.copy(sphere.position)
-    textPosB.add(sphereToPointer.clone().normalize().multiplyScalar(1.2 * radius * pixelsToWorld))
+    textPosB.add(sphereToPointer.clone().normalize().multiplyScalar(1.3 * radius * pixelsToWorld))
     // @ts-ignore
     textRingB.material.uniforms.time.value = frame;
     textRingB.lookAt(sphere.position)
     textRingB.rotateOnAxis(textRotationB, 0.5 * Math.PI)
     textRingB.position.copy(textPosB)
+
+    textPosC.copy(sphere.position)
+    textPosC.add(sphereToPointer.clone().normalize().multiplyScalar(1.45 * radius * pixelsToWorld))
+    // @ts-ignore
+    textRingC.material.uniforms.time.value = frame;
+    textRingC.lookAt(sphere.position)
+    textRingC.rotateOnAxis(textRotationC, 0.5 * Math.PI)
+    textRingC.position.copy(textPosC)
 
     stats.end()
 

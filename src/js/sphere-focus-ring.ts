@@ -59,7 +59,6 @@ export function createTextRing({ content, font, radius, position, pixelsToWorld 
     tMaterial.uniforms.radius.value = pixelsToWorld * radius
     tMaterial.uniforms.meshStart.value = tVerts.getZ(0)
 
-    console.log(tX)
     textGeometry.setAttribute("xPos", new THREE.Float32BufferAttribute(tX, 1))
 
     // POSITIONING TEXT RING
