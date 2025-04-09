@@ -7,15 +7,14 @@ import * as THREE from "three"
 import { Font, TextGeometry } from "three/examples/jsm/Addons.js"
 import * as textShader from "../shaders/circulartext.glsl.js"
 
-type CreateTextRingParams = { content: string, font: Font, radius: number, position: THREE.Vector3, pixelsToWorld: number }
-// type CreateTextRingReturn = { update: () => any, object: THREE.Object3D}
-export function createTextRing({ content, font, radius, position, pixelsToWorld }: CreateTextRingParams): THREE.Mesh {
+type CreateTextRingParams = { content: string, font: Font, ringRadius: number, sphereRadius: number, position: THREE.Vector3, pixelsToWorld: number }
+export function createTextRing({ content, font, ringRadius, sphereRadius, position, pixelsToWorld }: CreateTextRingParams): THREE.Mesh {
     //const textGeometry = new TextGeometry("==============================", {
     // const textGeometry = new TextGeometry("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", {
     //const textGeometry = new TextGeometry("00000000000000000000000000000000000000000000000000000000", {
     const textGeometry = new TextGeometry(content, {
         font: font,
-        size: 8,
+        size: 12,
         depth: 0.4,
         bevelEnabled: true,
         bevelSegments: 1,
@@ -34,9 +33,18 @@ export function createTextRing({ content, font, radius, position, pixelsToWorld 
             radius: {
                 value: THREE.FloatType,
             },
+            sRadius: {
+                value: THREE.FloatType,
+            },
+            scale: {
+                value: THREE.FloatType,
+            },
             time: {
                 value: THREE.FloatType,
-            }
+            },
+            extrusion: {
+                value: THREE.FloatType
+            },
         },
         vertexShader: textShader.vertex,
         fragmentShader: textShader.fragment
@@ -55,16 +63,18 @@ export function createTextRing({ content, font, radius, position, pixelsToWorld 
     const boundingBox = new THREE.Vector3()
     textGeometry.computeBoundingBox()
     textGeometry.boundingBox.getSize(boundingBox)
-    tMaterial.uniforms.length.value = boundingBox.x
-    tMaterial.uniforms.radius.value = pixelsToWorld * radius
+    tMaterial.uniforms.length.value = boundingBox.x;
+    tMaterial.uniforms.radius.value = pixelsToWorld * ringRadius;
+    tMaterial.uniforms.sRadius.value = sphereRadius;
+    tMaterial.uniforms.scale.value = pixelsToWorld;
     tMaterial.uniforms.meshStart.value = tVerts.getZ(0)
 
     textGeometry.setAttribute("xPos", new THREE.Float32BufferAttribute(tX, 1))
 
     // POSITIONING TEXT RING
     const text = new THREE.Mesh(textGeometry, tMaterial);
-    text.position.copy(position).add(new THREE.Vector3(radius * pixelsToWorld, radius * pixelsToWorld, 0));
-    text.scale.set(0.8, 0.8, 0.8)
+    text.position.copy(position).add(new THREE.Vector3(ringRadius * pixelsToWorld, ringRadius * pixelsToWorld, 0));
+    text.scale.set(pixelsToWorld, pixelsToWorld, pixelsToWorld)
 
     return text
 }

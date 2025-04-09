@@ -4,13 +4,19 @@ export const vertex = /* glsl */ `
 varying vec3 vNormal;
 
 uniform float length;
+// radius of ring
 uniform float radius;
+// radius of sphere, not scaled
+uniform float sRadius;
+uniform float scale;
+uniform float extrusion;
 uniform float meshStart;
 uniform float time;
 attribute float xPos;
 
 #define M_PI 3.1415926535897932384626433832795
 
+float amplitude = 6.0;
 void main() {
     vNormal = normal;
 
@@ -18,10 +24,17 @@ void main() {
     // or at least sort out the lack of spacing on the wrap
     // fixes loss-of-depth issue with second term, meshStart is provided
     // as uniform, just z component of first vertex then transform around circle
-    float offset = time * -0.7;
+    float offset = time;
     float x = sin(2.0 * M_PI * xPos / length + offset) * (radius) + (position.z - meshStart) * sin(2.0 * M_PI * xPos / length + offset);
     float z = cos(2.0 * M_PI * xPos / length + offset) * (radius) + (position.z - meshStart) * cos(2.0 * M_PI * xPos / length + offset);
-    float y = sin(2.0 * M_PI * offset + 2.0 * M_PI * position.x / 20.0) * 3.0 + position.y;
+
+    // need to divide by scale because it is in non-adjusted world dimensions
+    // not radius, idk why tbh.. lost in the scaling and screen-world stuff
+    float extrusion_ = min(max(extrusion / scale - sRadius, 0.0), sRadius);
+    // this preserves the height of the letters
+    // and the second components inside sin is for wave effect
+    float offsetY = time * 4.0; //time;
+    float y = sin(20.0 * M_PI + offsetY + position.x / 20.0) * amplitude + position.y + extrusion_;
 
     vec3 newPosition = vec3(x, y, z);
     //vec3 newPosition = position + vec3(0, xPos, 0);
@@ -36,7 +49,6 @@ void main() {
 export const fragment = /* glsl */ `
 // same name and type as VS
 varying vec3 vNormal;
-varying float vHeight;
 void main() {
     //vec3 light = vec3(-0.2, -0.2, 2.0);
 

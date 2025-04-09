@@ -18,10 +18,18 @@ window.addEventListener("resize", () => {
 // TODO synchronously loading fonts, should change
 const fonts = await loadFonts()//.then(fonts => {
 
+const stats = new Stats()
+// the number will decide which information will be displayed
+// 0 => FPS Frames rendered in the last second. The higher the number the better.
+// 1 => MS Milliseconds needed to render a frame. The lower the number the better.
+// 2 => MB MBytes of allocated memory. (Run Chrome with --enable-precise-memory-info)
+// 3 => CUSTOM User-defined panel support.
+stats.showPanel(0)
+document.body.appendChild(stats.dom)
+
 camera.position.z = 1000
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio)
-renderer.setAnimationLoop(animate);
 document.body.appendChild(renderer.domElement);
 
 
@@ -42,17 +50,24 @@ if (mobile) {
 }
 console.log(sRadius, sOffsetX)
 
-const geometry = new THREE.SphereGeometry(sRadius, sRadius / 5, sRadius / 5);
+// TODO fix/add/remove those last func params, no clue what the values are doing, trying to optimize vertex count
+const geometry = new THREE.SphereGeometry(sRadius, sRadius / 4, sRadius / 4, 0 * Math.PI, 1 * Math.PI);
+// rotate geometry (not object) to hide vertex density non-uniformity which is especially noticeable at poles
+geometry.rotateZ(0.25 * Math.PI)
+// unfortunately couldn't get much more (entirely) uniform Icos to work...
+// const geometry = new THREE.IcosahedronGeometry(sRadius, Math.round(sRadius / 10))//.toNonIndexed();
 
 const vShaderSphere = globularShader.vertex
 const fShaderSphere = globularShader.fragment
 
+console.log("here")
 const verts = geometry.getAttribute("position").count;
+console.log(verts)
 const values = []
 
 for (let v = 0; v < verts; v++) {
-    // displacement values for each vertex
-    values.push((0.5 + Math.min(Math.random(), 1)) * sRadius * 0.1);
+    // displacement values for each vertex, value between 
+    values.push((0.6 + (Math.random() * 0.4)));
 }
 const positions = new Float32Array(values);
 geometry.setAttribute("displacement", new THREE.BufferAttribute(positions, 1))
@@ -62,10 +77,16 @@ const material = new THREE.ShaderMaterial({
         pointer_direction: {
             value: new THREE.Vector3()
         },
+        extrusion: {
+            value: THREE.FloatType
+        },
         amplitude: {
             value: THREE.FloatType
         },
         radius: {
+            value: THREE.FloatType
+        },
+        scale: {
             value: THREE.FloatType
         },
     },
@@ -99,16 +120,19 @@ const dir = ndc.sub(camera.position).normalize();
 // that bottom left edge of frustum according to depth
 const worldPos = camera.position.clone().add(dir.multiplyScalar(depth));
 
-const radius = sphere.geometry.parameters.radius
+//const radius = sphere.geometry.parameters.radius
 // Adjust object scale to maintain screen siz10
 // see this: https://discussions.unity.com/t/calculating-perspective-camera-size-at-depth/60559
 // and this chat: https://chatgpt.com/share/67eea440-74c4-800f-b646-1e8182151ed1
 // and this: https://threejs.org/manual/#en/faq
 const worldHeightAtDepth = 2 * depth * Math.tan(0.5 * camera.fov * Math.PI / 180);
 const pixelsToWorld = worldHeightAtDepth / height;
-sphere.position.copy(worldPos).add(new THREE.Vector3(radius / 4 * pixelsToWorld - sOffsetX * pixelsToWorld, radius / 4 * pixelsToWorld, 0));
+sphere.position.copy(worldPos).add(new THREE.Vector3(sRadius / 4 * pixelsToWorld - sOffsetX * pixelsToWorld, sRadius / 4 * pixelsToWorld, 0));
 sphere.scale.set(pixelsToWorld, pixelsToWorld, pixelsToWorld);
-sphere.material.uniforms.radius.value = sRadius;
+sphere.material.uniforms.radius.value = sRadius * pixelsToWorld;
+// need to specify scale, because it doesn't apply to vertices in shader
+// so any transformation to their pos isn't consistent with radius [without this]
+sphere.material.uniforms.scale.value = pixelsToWorld
 /////////////////////////////////
 // TEXT
 /////////////////////////////////
@@ -118,7 +142,8 @@ const textRingA = createTextRing({
     content: textRingAContent,
     font: fonts.ibm,
     position: worldPos,
-    radius: radius / 3,
+    ringRadius: sRadius / 1.5,
+    sphereRadius: sRadius,
     pixelsToWorld,
 })
 scene.add(textRingA)
@@ -128,7 +153,8 @@ const textRingB = createTextRing({
     content: textRingBContent,
     font: fonts.ibm,
     position: worldPos,
-    radius: radius / 4.5,
+    ringRadius: sRadius / 3.5,
+    sphereRadius: sRadius,
     pixelsToWorld,
 })
 scene.add(textRingB)
@@ -138,7 +164,8 @@ const textRingC = createTextRing({
     content: textRingCContent,
     font: fonts.ibm,
     position: worldPos,
-    radius: radius / 8,
+    ringRadius: sRadius / 4,
+    sphereRadius: sRadius,
     pixelsToWorld,
 })
 scene.add(textRingC)
@@ -147,24 +174,19 @@ scene.add(textRingC)
 
 
 let sphereToPointer = new THREE.Vector3()
+const worldPointerPos = new THREE.Vector3()
 window.addEventListener("mousemove", (e) => {
-    const worldPos = windowToWorld(e, depth - radius / 7)
+    //const worldPos = windowToWorld(e, depth - sRadius / 10)
+    worldPointerPos.copy(windowToWorld(e, depth - sRadius / 6))
     // sphere pos to mouse pos
-    sphereToPointer = worldPos.sub(sphere.position)
-    console.log(sphereToPointer)
+    sphereToPointer.copy(worldPointerPos.sub(sphere.position))
+
+    // console.log(sphereToPointer.length(), pixelsToWorld * sRadius)
+    console.log(Math.max(0, sphereToPointer.length() - pixelsToWorld * sRadius))
 })
 
 
 // RENDERING AND ANIMATING
-const stats = new Stats()
-// the number will decide which information will be displayed
-// 0 => FPS Frames rendered in the last second. The higher the number the better.
-// 1 => MS Milliseconds needed to render a frame. The lower the number the better.
-// 2 => MB MBytes of allocated memory. (Run Chrome with --enable-precise-memory-info)
-// 3 => CUSTOM User-defined panel support.
-stats.showPanel(0)
-
-document.body.appendChild(stats.dom)
 
 const clock = new THREE.Clock(true)
 let delta = 0
@@ -172,45 +194,61 @@ let frame = 0
 let textPosA = new THREE.Vector3()
 let textPosB = new THREE.Vector3()
 let textPosC = new THREE.Vector3()
-let displacementBuffer = new THREE.BufferAttribute(positions, 1)
 
-const textRotationA = new THREE.Vector3(1, 0, 0)
+const textRotationA = new THREE.Vector3(-1, 0, 0)
 const textRotationB = new THREE.Vector3(-1, 0, 0)
-const textRotationC = new THREE.Vector3(1, 0, 0)
+const textRotationC = new THREE.Vector3(-1, 0, 0)
 
 let extrusion = 0;
+let absoluteExtrusion = 0;
+
+const sphereToPointerAllocation = new THREE.Vector3()
 
 function animate() {
     stats.begin()
 
-    extrusion = Math.min(sphereToPointer.length() / sRadius, 1);
+    extrusion = Math.max((sphereToPointer.length() - sRadius * pixelsToWorld), 0);
+    absoluteExtrusion = sphereToPointer.length();
+    console.log("ABSOLUTE", absoluteExtrusion, sRadius * pixelsToWorld)
 
     delta = clock.getDelta()
     frame += 1 * delta
-    geometry.setAttribute("displacement", displacementBuffer)
     material.uniforms.pointer_direction.value = sphereToPointer;
-    material.uniforms.amplitude.value += delta * 5 * Math.min(0.6 + extrusion, 1);
+    material.uniforms.extrusion.value = absoluteExtrusion
+    material.uniforms.amplitude.value += delta * 10 //* 5 * Math.min(0.6 + extrusion, 1);
 
+    // we want the rings to extend with extrusion, interpolate between 0 and max
+    // as a function of extrusion
+
+    sphereToPointerAllocation.copy(sphereToPointer)
+    sphereToPointerAllocation.normalize()
     textPosA.copy(sphere.position)
-    textPosA.add(sphereToPointer.clone().normalize().multiplyScalar((0.99 + extrusion * 0.2) * radius * pixelsToWorld))
+    textPosA.add(sphereToPointerAllocation.clone().multiplyScalar(sRadius * pixelsToWorld))
     // @ts-ignore
-    textRingA.material.uniforms.time.value += delta * (0.2 + extrusion);
+    textRingA.material.uniforms.time.value += delta// * (0.2 + extrusion / 100);
+    // @ts-ignore
+    textRingA.material.uniforms.extrusion.value = absoluteExtrusion
     textRingA.lookAt(sphere.position)
     textRingA.rotateOnAxis(textRotationA, 0.5 * Math.PI)
     textRingA.position.copy(textPosA)
 
     textPosB.copy(sphere.position)
-    textPosB.add(sphereToPointer.clone().normalize().multiplyScalar((0.99 + extrusion * 0.3) * radius * pixelsToWorld))
+
+    textPosB.add(sphereToPointerAllocation.clone().multiplyScalar(sRadius * pixelsToWorld))
     // @ts-ignore
-    textRingB.material.uniforms.time.value += delta * (0.2 + extrusion);
+    textRingB.material.uniforms.time.value += delta// * (0.2 + extrusion);
+    // @ts-ignore
+    textRingB.material.uniforms.extrusion.value = absoluteExtrusion
     textRingB.lookAt(sphere.position)
     textRingB.rotateOnAxis(textRotationB, 0.5 * Math.PI)
     textRingB.position.copy(textPosB)
 
     textPosC.copy(sphere.position)
-    textPosC.add(sphereToPointer.clone().normalize().multiplyScalar((0.99 + extrusion * 0.45) * radius * pixelsToWorld))
+    textPosC.add(sphereToPointer.clone().normalize().multiplyScalar(sRadius * pixelsToWorld))
     // @ts-ignore
-    textRingC.material.uniforms.time.value += delta * (0.2 + extrusion);
+    textRingC.material.uniforms.time.value += delta// * (0.2 + extrusion);
+    // @ts-ignore
+    textRingC.material.uniforms.extrusion.value = absoluteExtrusion
     textRingC.lookAt(sphere.position)
     textRingC.rotateOnAxis(textRotationC, 0.5 * Math.PI)
     textRingC.position.copy(textPosC)
@@ -220,11 +258,13 @@ function animate() {
     renderer.render(scene, camera);
 }
 
+renderer.setAnimationLoop(animate);
+
 
 let vec = new THREE.Vector3(); // create once and reuse
 let pos = new THREE.Vector3(); // create once and reuse
 
-function windowToWorld(event: MouseEvent, depth: number = 500) {
+function windowToWorld(event: MouseEvent, depth: number = 1000) {
     vec.set(
         (event.clientX / width) * 2 - 1,
         - (event.clientY / height) * 2 + 1,
