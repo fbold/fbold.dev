@@ -194,13 +194,6 @@ window.addEventListener("mousemove", (e) => {
 const clock = new THREE.Clock(true)
 let delta = 0
 let frame = 0
-let textPosA = new THREE.Vector3()
-let textPosB = new THREE.Vector3()
-let textPosC = new THREE.Vector3()
-
-const textRotationA = new THREE.Vector3(-1, 0, 0)
-const textRotationB = new THREE.Vector3(-1, 0, 0)
-const textRotationC = new THREE.Vector3(-1, 0, 0)
 
 let extrusion = 0;
 let absoluteExtrusion = 0;
@@ -225,36 +218,10 @@ function animate() {
 
     sphereToPointerAllocation.copy(sphereToPointer)
     sphereToPointerAllocation.normalize()
-    textPosA.copy(sphere.position)
-    textPosA.add(sphereToPointerAllocation.clone().multiplyScalar(sRadius * pixelsToWorld))
-    // @ts-ignore
-    textRingA.material.uniforms.time.value += delta// * (0.2 + extrusion / 100);
-    // @ts-ignore
-    textRingA.material.uniforms.extrusion.value = absoluteExtrusion
-    textRingA.lookAt(sphere.position)
-    textRingA.rotateOnAxis(textRotationA, 0.5 * Math.PI)
-    textRingA.position.copy(textPosA)
 
-    textPosB.copy(sphere.position)
-
-    textPosB.add(sphereToPointerAllocation.clone().multiplyScalar(sRadius * pixelsToWorld))
-    // @ts-ignore
-    textRingB.material.uniforms.time.value += delta// * (0.2 + extrusion);
-    // @ts-ignore
-    textRingB.material.uniforms.extrusion.value = absoluteExtrusion
-    textRingB.lookAt(sphere.position)
-    textRingB.rotateOnAxis(textRotationB, 0.5 * Math.PI)
-    textRingB.position.copy(textPosB)
-
-    textPosC.copy(sphere.position)
-    textPosC.add(sphereToPointer.clone().normalize().multiplyScalar(sRadius * pixelsToWorld))
-    // @ts-ignore
-    textRingC.material.uniforms.time.value += delta// * (0.2 + extrusion);
-    // @ts-ignore
-    textRingC.material.uniforms.extrusion.value = absoluteExtrusion
-    textRingC.lookAt(sphere.position)
-    textRingC.rotateOnAxis(textRotationC, 0.5 * Math.PI)
-    textRingC.position.copy(textPosC)
+    textRingA.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
+    textRingB.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
+    textRingC.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
 
     stats.end()
 

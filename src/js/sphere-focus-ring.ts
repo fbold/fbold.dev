@@ -17,8 +17,11 @@ interface CreateTextRingParams {
     /* As a proportion of radius */
     extensionLimit: number
 }
+interface MyText extends THREE.Mesh {
+    onAnimate?: (delta: number, spherePos: THREE.Vector3, sphereToPointer: THREE.Vector3, extrusion: number) => void
+}
 
-export function createTextRing({ content, font, ringRadius, sphereRadius, position, pixelsToWorld, extensionLimit }: CreateTextRingParams): THREE.Mesh {
+export function createTextRing({ content, font, ringRadius, sphereRadius, position, pixelsToWorld, extensionLimit }: CreateTextRingParams): MyText {
     //const textGeometry = new TextGeometry("==============================", {
     // const textGeometry = new TextGeometry("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", {
     //const textGeometry = new TextGeometry("00000000000000000000000000000000000000000000000000000000", {
@@ -86,9 +89,23 @@ export function createTextRing({ content, font, ringRadius, sphereRadius, positi
     textGeometry.setAttribute("xPos", new THREE.Float32BufferAttribute(tX, 1))
 
     // POSITIONING TEXT RING
-    const text = new THREE.Mesh(textGeometry, tMaterial);
-    text.position.copy(position).add(new THREE.Vector3(ringRadius * pixelsToWorld, ringRadius * pixelsToWorld, 0));
+    const text: MyText = new THREE.Mesh(textGeometry, tMaterial);
+    // text.position.copy(position).add(new THREE.Vector3(ringRadius * pixelsToWorld, ringRadius * pixelsToWorld, 0));
     text.scale.set(pixelsToWorld, pixelsToWorld, pixelsToWorld)
+
+    const textPos = new THREE.Vector3()
+    const rotationVector = new THREE.Vector3(-1, 0, 0)
+    text.onAnimate = (delta, spherePos, sphereToPointer, extrusion) => {
+        textPos.copy(spherePos)
+        textPos.add(sphereToPointer.clone().multiplyScalar(sphereRadius * pixelsToWorld))
+        // @ts-ignore
+        text.material.uniforms.time.value += delta// * (0.2 + extrusion / 100);
+        // @ts-ignore
+        text.material.uniforms.extrusion.value = extrusion
+        text.lookAt(spherePos)
+        text.rotateOnAxis(rotationVector, 0.5 * Math.PI)
+        text.position.copy(textPos)
+    }
 
     return text
 }
