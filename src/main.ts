@@ -143,6 +143,7 @@ const textRingA = createTextRing({
     font: fonts.ibm,
     position: worldPos,
     ringRadius: sRadius / 1.5,
+    extensionLimit: 0.22,
     sphereRadius: sRadius,
     pixelsToWorld,
 })
@@ -153,7 +154,8 @@ const textRingB = createTextRing({
     content: textRingBContent,
     font: fonts.ibm,
     position: worldPos,
-    ringRadius: sRadius / 3.5,
+    ringRadius: sRadius / 3,
+    extensionLimit: 0.7,
     sphereRadius: sRadius,
     pixelsToWorld,
 })
@@ -164,8 +166,9 @@ const textRingC = createTextRing({
     content: textRingCContent,
     font: fonts.ibm,
     position: worldPos,
-    ringRadius: sRadius / 4,
+    ringRadius: sRadius / 5,
     sphereRadius: sRadius,
+    extensionLimit: -1,
     pixelsToWorld,
 })
 scene.add(textRingC)

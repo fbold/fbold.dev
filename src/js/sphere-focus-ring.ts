@@ -7,8 +7,18 @@ import * as THREE from "three"
 import { Font, TextGeometry } from "three/examples/jsm/Addons.js"
 import * as textShader from "../shaders/circulartext.glsl.js"
 
-type CreateTextRingParams = { content: string, font: Font, ringRadius: number, sphereRadius: number, position: THREE.Vector3, pixelsToWorld: number }
-export function createTextRing({ content, font, ringRadius, sphereRadius, position, pixelsToWorld }: CreateTextRingParams): THREE.Mesh {
+interface CreateTextRingParams {
+    content: string,
+    font: Font,
+    ringRadius: number,
+    sphereRadius: number,
+    position: THREE.Vector3,
+    pixelsToWorld: number,
+    /* As a proportion of radius */
+    extensionLimit: number
+}
+
+export function createTextRing({ content, font, ringRadius, sphereRadius, position, pixelsToWorld, extensionLimit }: CreateTextRingParams): THREE.Mesh {
     //const textGeometry = new TextGeometry("==============================", {
     // const textGeometry = new TextGeometry("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", {
     //const textGeometry = new TextGeometry("00000000000000000000000000000000000000000000000000000000", {
@@ -45,6 +55,9 @@ export function createTextRing({ content, font, ringRadius, sphereRadius, positi
             extrusion: {
                 value: THREE.FloatType
             },
+            extensionLimit: {
+                value: THREE.FloatType
+            },
         },
         vertexShader: textShader.vertex,
         fragmentShader: textShader.fragment
@@ -64,9 +77,10 @@ export function createTextRing({ content, font, ringRadius, sphereRadius, positi
     textGeometry.computeBoundingBox()
     textGeometry.boundingBox.getSize(boundingBox)
     tMaterial.uniforms.length.value = boundingBox.x;
-    tMaterial.uniforms.radius.value = pixelsToWorld * ringRadius;
-    tMaterial.uniforms.sRadius.value = sphereRadius;
+    tMaterial.uniforms.radius.value = ringRadius * pixelsToWorld;
+    tMaterial.uniforms.sRadius.value = sphereRadius * pixelsToWorld;
     tMaterial.uniforms.scale.value = pixelsToWorld;
+    tMaterial.uniforms.extensionLimit.value = extensionLimit;
     tMaterial.uniforms.meshStart.value = tVerts.getZ(0)
 
     textGeometry.setAttribute("xPos", new THREE.Float32BufferAttribute(tX, 1))

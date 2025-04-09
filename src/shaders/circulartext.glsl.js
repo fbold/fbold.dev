@@ -6,10 +6,11 @@ varying vec3 vNormal;
 uniform float length;
 // radius of ring
 uniform float radius;
-// radius of sphere, not scaled
+// radius of sphere, yes scaled
 uniform float sRadius;
 uniform float scale;
 uniform float extrusion;
+uniform float extensionLimit;
 uniform float meshStart;
 uniform float time;
 attribute float xPos;
@@ -17,6 +18,8 @@ attribute float xPos;
 #define M_PI 3.1415926535897932384626433832795
 
 float amplitude = 6.0;
+float trueExtrusion;
+float extrusion_;
 void main() {
     vNormal = normal;
 
@@ -30,11 +33,16 @@ void main() {
 
     // need to divide by scale because it is in non-adjusted world dimensions
     // not radius, idk why tbh.. lost in the scaling and screen-world stuff
-    float extrusion_ = min(max(extrusion / scale - sRadius, 0.0), sRadius);
+    extrusion_ = max((extrusion - sRadius) / scale, 0.0);
+    if (extensionLimit == -1.0) {
+        trueExtrusion = extrusion_;
+    } else {
+        trueExtrusion = (min(extrusion_, sRadius) / sRadius) * extensionLimit * sRadius;
+    }
     // this preserves the height of the letters
     // and the second components inside sin is for wave effect
     float offsetY = time * 4.0; //time;
-    float y = sin(20.0 * M_PI + offsetY + position.x / 20.0) * amplitude + position.y + extrusion_;
+    float y = sin(20.0 * M_PI + offsetY + position.x / 20.0) * amplitude + position.y + trueExtrusion;
 
     vec3 newPosition = vec3(x, y, z);
     //vec3 newPosition = position + vec3(0, xPos, 0);
