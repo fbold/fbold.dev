@@ -139,41 +139,54 @@ sphere.material.uniforms.scale.value = pixelsToWorld
 // TEXT
 /////////////////////////////////
 
-const textRingAContent = "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
-const textRingA = createTextRing({
-    content: textRingAContent,
-    font: fonts.ibm,
-    position: worldPos,
-    ringRadius: sRadius / 1.5,
-    extensionLimit: 0.22,
-    sphereRadius: sRadius,
-    pixelsToWorld,
-})
-scene.add(textRingA)
+// const textRingZContent = "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
+// const textRingZ = createTextRing({
+//     content: textRingZContent,
+//     font: fonts.ibm,
+//     position: worldPos,
+//     ringRadius: sRadius / 1,
+//     extensionLimit: 0.1,
+//     sphereRadius: sRadius,
+//     relativeHeight: 0.85,
+//     pixelsToWorld,
+// })
+// scene.add(textRingZ)
+//
+// const textRingAContent = "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
+// const textRingA = createTextRing({
+//     content: textRingAContent,
+//     font: fonts.ibm,
+//     position: worldPos,
+//     ringRadius: sRadius / 1.5,
+//     extensionLimit: 0.22,
+//     sphereRadius: sRadius,
+//     pixelsToWorld,
+// })
+// scene.add(textRingA)
 
-const textRingBContent = "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
-const textRingB = createTextRing({
-    content: textRingBContent,
-    font: fonts.ibm,
-    position: worldPos,
-    ringRadius: sRadius / 3,
-    extensionLimit: 0.7,
-    sphereRadius: sRadius,
-    pixelsToWorld,
-})
-scene.add(textRingB)
+// const textRingBContent = "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
+// const textRingB = createTextRing({
+//     content: textRingBContent,
+//     font: fonts.ibm,
+//     position: worldPos,
+//     ringRadius: sRadius / 3,
+//     extensionLimit: 0.5,
+//     sphereRadius: sRadius,
+//     pixelsToWorld,
+// })
+// scene.add(textRingB)
 
-const textRingCContent = "<><><><><><><><><><><><><><><><><><><><><><>"
-const textRingC = createTextRing({
-    content: textRingCContent,
-    font: fonts.ibm,
-    position: worldPos,
-    ringRadius: sRadius / 5,
-    sphereRadius: sRadius,
-    extensionLimit: -1,
-    pixelsToWorld,
-})
-scene.add(textRingC)
+// const textRingCContent = "<><><><><><><><><><><><><><><><><><><><><><>"
+// const textRingC = createTextRing({
+//     content: textRingCContent,
+//     font: fonts.ibm,
+//     position: worldPos,
+//     ringRadius: sRadius / 5,
+//     sphereRadius: sRadius,
+//     extensionLimit: 0.9,
+//     pixelsToWorld,
+// })
+// scene.add(textRingC)
 // const newText = text.clone()
 // scene.add(newText)
 
@@ -221,9 +234,10 @@ function animate() {
     sphereToPointerAllocation.copy(sphereToPointer)
     sphereToPointerAllocation.normalize()
 
-    textRingA.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
-    textRingB.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
-    textRingC.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
+    // textRingZ.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
+    // textRingA.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
+    // textRingB.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
+    // textRingC.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
 
     stats.end()
 
@@ -245,7 +259,7 @@ function windowToWorld(event: MouseEvent, depth: number = 1000) {
 
     vec.unproject(camera);
     vec.sub(camera.position).normalize();
-    pos.copy(camera.position).add(vec.multiplyScalar(depth));
+    pos.copy(camera.position).add(vec.multiplyScalar(depth - sRadius * pixelsToWorld * 0.1));
     return pos
 }
 

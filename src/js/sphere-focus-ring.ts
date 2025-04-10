@@ -13,6 +13,7 @@ interface CreateTextRingParams {
     ringRadius: number,
     sphereRadius: number,
     position: THREE.Vector3,
+    relativeHeight?: number,
     pixelsToWorld: number,
     /* As a proportion of radius */
     extensionLimit: number
@@ -21,13 +22,19 @@ interface MyText extends THREE.Mesh {
     onAnimate?: (delta: number, spherePos: THREE.Vector3, sphereToPointer: THREE.Vector3, extrusion: number) => void
 }
 
-export function createTextRing({ content, font, ringRadius, sphereRadius, position, pixelsToWorld, extensionLimit }: CreateTextRingParams): MyText {
-    //const textGeometry = new TextGeometry("==============================", {
-    // const textGeometry = new TextGeometry("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", {
-    //const textGeometry = new TextGeometry("00000000000000000000000000000000000000000000000000000000", {
+export function createTextRing({
+    content,
+    font,
+    ringRadius,
+    sphereRadius,
+    position,
+    relativeHeight,
+    pixelsToWorld,
+    extensionLimit
+}: CreateTextRingParams): MyText {
     const textGeometry = new TextGeometry(content, {
         font: font,
-        size: 12,
+        size: Math.round(sphereRadius * 0.05),
         depth: 0.4,
         bevelEnabled: true,
         bevelSegments: 1,
@@ -97,7 +104,7 @@ export function createTextRing({ content, font, ringRadius, sphereRadius, positi
     const rotationVector = new THREE.Vector3(-1, 0, 0)
     text.onAnimate = (delta, spherePos, sphereToPointer, extrusion) => {
         textPos.copy(spherePos)
-        textPos.add(sphereToPointer.clone().multiplyScalar(sphereRadius * pixelsToWorld))
+        textPos.add(sphereToPointer.clone().multiplyScalar(sphereRadius * pixelsToWorld).multiplyScalar(relativeHeight || 1))
         // @ts-ignore
         text.material.uniforms.time.value += delta// * (0.2 + extrusion / 100);
         // @ts-ignore

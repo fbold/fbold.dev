@@ -58,3 +58,34 @@ body {
     height: 100%;
     background-color: transparent;
 }
+
+#menu {
+    transition: transform 400ms;
+}
+
+#menu div {
+    transition: all 400ms;
+}
+
+#menu div:nth-child(1) {
+    opacity: 0;
+}
+
+#menu.hide div:nth-child(1) {
+    opacity: 1;
+    z-index: 10;
+}
+
+#menu.hide div:nth-child(2) {
+    opacity: 0;
+}
+
+#menu.hide div:nth-child(3) {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+#menu.hide div:nth-child(4) {
+    transform: translateY(-200%);
+    opacity: 0;
+}
