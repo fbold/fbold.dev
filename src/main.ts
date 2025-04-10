@@ -4,6 +4,10 @@ import { Font, FontLoader } from 'three/examples/jsm/Addons.js';
 import { createTextRing } from './js/sphere-focus-ring.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
+import { setupNavigation } from "./js/navigation.ts"
+
+setupNavigation()
+
 
 const width = window.innerWidth
 const height = window.innerHeight
@@ -60,9 +64,7 @@ geometry.rotateZ(0.25 * Math.PI)
 const vShaderSphere = globularShader.vertex
 const fShaderSphere = globularShader.fragment
 
-console.log("here")
 const verts = geometry.getAttribute("position").count;
-console.log(verts)
 const values = []
 
 for (let v = 0; v < verts; v++) {
@@ -185,7 +187,7 @@ window.addEventListener("mousemove", (e) => {
     sphereToPointer.copy(worldPointerPos.sub(sphere.position))
 
     // console.log(sphereToPointer.length(), pixelsToWorld * sRadius)
-    console.log(Math.max(0, sphereToPointer.length() - pixelsToWorld * sRadius))
+    //console.log(Math.max(0, sphereToPointer.length() - pixelsToWorld * sRadius))
 })
 
 
@@ -205,7 +207,7 @@ function animate() {
 
     extrusion = Math.max((sphereToPointer.length() - sRadius * pixelsToWorld), 0);
     absoluteExtrusion = sphereToPointer.length();
-    console.log("ABSOLUTE", absoluteExtrusion, sRadius * pixelsToWorld)
+    //console.log("ABSOLUTE", absoluteExtrusion, sRadius * pixelsToWorld)
 
     delta = clock.getDelta()
     frame += 1 * delta
@@ -251,6 +253,8 @@ function windowToWorld(event: MouseEvent, depth: number = 1000) {
 type Fonts = {
     [name: string]: Font
 }
+
+
 async function loadFonts(): Promise<Fonts> {
     const loader = new FontLoader();
 
