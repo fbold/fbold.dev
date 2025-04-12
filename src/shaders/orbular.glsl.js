@@ -21,15 +21,16 @@ void main() {
     float sinDotVal = 1.051462224 * sin(asinDotVal * 0.8);
     // power it to distort and make steeper
     float level = pow(max(sinDotVal, 0.0), 16.0);
+    float wobbleLevel = pow(max(sinDotVal, 0.0), 4.0);
 
     // now range of level is -1 to 1
     float wobble = 6.0 * sin(10.0 * displacement * radius + amplitude);
 
     // need to divide by scale because it is in non-adjusted world dimensions
     // NOTE it is limited to radius, ie range of extrusion_ is 0 to radius
-    float extrusion_ = min(max(extrusion - radius, 0.0) / scale, 1.2 * radius);
+    float extrusion_ = min(max(extrusion - radius, 0.0) / scale, 0.8 * radius);
 
-    vec3 newPosition = position + normalize(normal) * vec3(level * displacement * extrusion_ + wobble);
+    vec3 newPosition = position + normalize(normal) * vec3(level * displacement * extrusion_ + wobble * wobbleLevel);
 
     gl_Position = projectionMatrix *
             modelViewMatrix *

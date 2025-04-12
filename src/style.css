@@ -89,3 +89,22 @@ body {
     transform: translateY(-200%);
     opacity: 0;
 }
+
+#projects {
+    transform: translateY(100vh);
+    transition: transform 400ms;
+}
+
+#projects.show {
+    transform: translateY(0)
+}
+
+#projects div:nth-child(2) {
+    transition: transform 400ms;
+    transition-delay: 400ms;
+    transform: translateY(100%);
+}
+
+#projects.show div:nth-child(2) {
+    transform: translateY(0)
+}

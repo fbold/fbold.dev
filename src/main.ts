@@ -69,7 +69,7 @@ const values = []
 
 for (let v = 0; v < verts; v++) {
     // displacement values for each vertex, value between 
-    values.push((0.6 + (Math.random() * 0.4)));
+    values.push((0.7 + (Math.random() * 0.3)));
 }
 const positions = new Float32Array(values);
 geometry.setAttribute("displacement", new THREE.BufferAttribute(positions, 1))
