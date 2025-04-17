@@ -35,6 +35,7 @@ camera.position.z = 1000
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio)
 document.body.appendChild(renderer.domElement);
+scene.background = new THREE.Color("#0d0b0b")
 
 
 // SPHERE
@@ -129,7 +130,7 @@ const worldPos = camera.position.clone().add(dir.multiplyScalar(depth));
 // and this: https://threejs.org/manual/#en/faq
 const worldHeightAtDepth = 2 * depth * Math.tan(0.5 * camera.fov * Math.PI / 180);
 const pixelsToWorld = worldHeightAtDepth / height;
-sphere.position.copy(worldPos).add(new THREE.Vector3(sRadius / 4 * pixelsToWorld - sOffsetX * pixelsToWorld, sRadius / 4 * pixelsToWorld, 0));
+sphere.position.copy(worldPos).add(new THREE.Vector3(- sOffsetX * pixelsToWorld, sRadius / 4 * pixelsToWorld, 0));
 sphere.scale.set(pixelsToWorld, pixelsToWorld, pixelsToWorld);
 sphere.material.uniforms.radius.value = sRadius * pixelsToWorld;
 // need to specify scale, because it doesn't apply to vertices in shader
