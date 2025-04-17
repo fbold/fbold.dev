@@ -99,12 +99,12 @@ body {
     transform: translateY(0)
 }
 
-#projects div:nth-child(2) {
+#projects .row:nth-child(2) {
     transition: transform 400ms;
-    transition-delay: 400ms;
-    transform: translateY(100%);
+    transition-delay: 100ms;
+    transform: translateY(100vh);
 }
 
-#projects.show div:nth-child(2) {
-    transform: translateY(0)
+#projects.show .row:nth-child(2) {
+    transform: translateY(0);
 }

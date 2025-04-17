@@ -106,7 +106,7 @@ export function createTextRing({
         textPos.copy(spherePos)
         textPos.add(sphereToPointer.clone().multiplyScalar(sphereRadius * pixelsToWorld).multiplyScalar(relativeHeight || 1))
         // @ts-ignore
-        text.material.uniforms.time.value += delta// * (0.2 + extrusion / 100);
+        text.material.uniforms.time.value += delta * 0.5// * (0.2 + extrusion / 100);
         // @ts-ignore
         text.material.uniforms.extrusion.value = extrusion
         text.lookAt(spherePos)

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import * as globularShader from "./shaders/orbular.glsl.js"
 import { Font, FontLoader } from 'three/examples/jsm/Addons.js';
-import { createTextRing } from './js/sphere-focus-ring.js';
+import { createTextRing } from './js/text-ring.ts';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import { setupNavigation } from "./js/navigation.ts"
@@ -188,13 +188,26 @@ sphere.material.uniforms.scale.value = pixelsToWorld
 //     pixelsToWorld,
 // })
 // scene.add(textRingC)
-// const newText = text.clone()
-// scene.add(newText)
+
+const textRingContent = " fbold.dev ~ fbold.dev  ~ fbold.dev  ~ fbold.dev  ~ fbold.dev  ~ fbold.dev  ~ fbold.dev ~ "
+const textRing = createTextRing({
+    content: textRingContent,
+    font: fonts.ibm,
+    position: worldPos,
+    ringRadius: sRadius,
+    sphereRadius: sRadius,
+    extensionLimit: 0,
+    relativeHeight: 0.6,
+    pixelsToWorld,
+})
+scene.add(textRing)
+
 
 
 let sphereToPointer = new THREE.Vector3()
 const worldPointerPos = new THREE.Vector3()
 window.addEventListener("mousemove", (e) => {
+    console.log("mouse moved", e)
     //const worldPos = windowToWorld(e, depth - sRadius / 10)
     worldPointerPos.copy(windowToWorld(e, depth - sRadius / 6))
     // sphere pos to mouse pos
@@ -239,6 +252,7 @@ function animate() {
     // textRingA.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
     // textRingB.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
     // textRingC.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
+    textRing.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
 
     stats.end()
 
@@ -274,10 +288,14 @@ async function loadFonts(): Promise<Fonts> {
     const loader = new FontLoader();
 
     const fonts: Fonts = {}
-    const font = await loader.loadAsync('/public/fonts/Absans_Regular.json', function(font) {
+    const fontAbsans = await loader.loadAsync('/public/fonts/Absans_Regular.json', function(font) {
     });
 
-    fonts.ibm = font
+    const fontIBM = await loader.loadAsync('/public/fonts/IBMPlexMono-LightItalic.json', function(font) {
+    });
+
+    fonts.absans = fontAbsans
+    fonts.ibm = fontIBM
 
     return fonts
 }
