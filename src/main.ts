@@ -5,6 +5,7 @@ import { createTextRing } from './js/text-ring.ts';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import { setupNavigation } from "./js/navigation.ts"
+import { createOrbitalText } from './js/orbital-text.ts';
 
 setupNavigation()
 
@@ -35,7 +36,7 @@ camera.position.z = 1000
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio)
 document.body.appendChild(renderer.domElement);
-scene.background = new THREE.Color("#0d0b0b")
+scene.background = new THREE.Color("#121212")
 
 
 // SPHERE
@@ -189,17 +190,18 @@ sphere.material.uniforms.scale.value = pixelsToWorld
 // })
 // scene.add(textRingC)
 
-const textRingContent = " fbold.dev ~ fbold.dev  ~ fbold.dev  ~ fbold.dev  ~ fbold.dev  ~ fbold.dev  ~ fbold.dev ~ "
-const textRing = createTextRing({
+const textRingContent = "☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺"
+const textRing = createOrbitalText({
     content: textRingContent,
-    font: fonts.ibm,
-    position: worldPos,
+    font: fonts.absans,
     ringRadius: sRadius,
     sphereRadius: sRadius,
-    extensionLimit: 0,
-    relativeHeight: 0.6,
     pixelsToWorld,
 })
+
+textRing.position.copy(sphere.position.clone().add(new THREE.Vector3(0, 0, 0)))//-0.2 * sRadius * pixelsToWorld, 0)))
+textRing.position.add(new THREE.Vector3(0 * sRadius * pixelsToWorld * 0.5, 0.1 * sRadius * pixelsToWorld, 0))
+// textRing.rotateOnAxis(new THREE.Vector3(0, 0, 1), -0.25 * Math.PI)
 scene.add(textRing)
 
 
@@ -207,7 +209,6 @@ scene.add(textRing)
 let sphereToPointer = new THREE.Vector3()
 const worldPointerPos = new THREE.Vector3()
 window.addEventListener("mousemove", (e) => {
-    console.log("mouse moved", e)
     //const worldPos = windowToWorld(e, depth - sRadius / 10)
     worldPointerPos.copy(windowToWorld(e, depth - sRadius / 6))
     // sphere pos to mouse pos
@@ -230,7 +231,7 @@ let absoluteExtrusion = 0;
 const sphereToPointerAllocation = new THREE.Vector3()
 
 function animate() {
-    stats.begin()
+    // stats.begin()
 
     extrusion = Math.max((sphereToPointer.length() - sRadius * pixelsToWorld), 0);
     absoluteExtrusion = sphereToPointer.length();
@@ -252,9 +253,9 @@ function animate() {
     // textRingA.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
     // textRingB.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
     // textRingC.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
-    textRing.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
+    textRing.onAnimate(delta, absoluteExtrusion)
 
-    stats.end()
+    // stats.end()
 
     renderer.render(scene, camera);
 }

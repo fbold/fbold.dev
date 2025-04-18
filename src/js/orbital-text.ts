@@ -1,50 +1,45 @@
-
 /////////////////////////////////
 // TEXT
 /////////////////////////////////
 
 import * as THREE from "three"
 import { Font, TextGeometry } from "three/examples/jsm/Addons.js"
-import * as textShader from "../shaders/circulartext.glsl.js"
+import * as textShader from "../shaders/orbital-text.glsl.js"
 
 interface CreateTextRingParams {
     content: string,
     font: Font,
     ringRadius: number,
     sphereRadius: number,
-    position: THREE.Vector3,
-    relativeHeight?: number,
     pixelsToWorld: number,
-    /* As a proportion of radius */
-    extensionLimit: number
 }
 interface MyText extends THREE.Mesh {
-    onAnimate?: (delta: number, spherePos: THREE.Vector3, sphereToPointer: THREE.Vector3, extrusion: number) => void
+    onAnimate?: (delta: number, extrusion: number) => void
 }
 
-export function createTextRing({
+export function createOrbitalText({
     content,
     font,
     ringRadius,
     sphereRadius,
-    position,
-    relativeHeight,
     pixelsToWorld,
-    extensionLimit
 }: CreateTextRingParams): MyText {
     const textGeometry = new TextGeometry(content, {
         font: font,
         size: Math.round(sphereRadius * 0.05),
-        depth: 0.4,
         bevelEnabled: true,
-        bevelSegments: 1,
+        depth: 1,
         bevelSize: 0,
-        bevelThickness: 0.1,
+        steps: 2,
+        bevelThickness: 0,
     })
 
     const tMaterial = new THREE.ShaderMaterial({
         uniforms: {
             meshStart: {
+                value: THREE.FloatType,
+            },
+            meshStartY: {
                 value: THREE.FloatType,
             },
             length: {
@@ -61,12 +56,6 @@ export function createTextRing({
             },
             time: {
                 value: THREE.FloatType,
-            },
-            extrusion: {
-                value: THREE.FloatType
-            },
-            extensionLimit: {
-                value: THREE.FloatType
             },
         },
         vertexShader: textShader.vertex,
@@ -87,11 +76,12 @@ export function createTextRing({
     textGeometry.computeBoundingBox()
     textGeometry.boundingBox.getSize(boundingBox)
     tMaterial.uniforms.length.value = boundingBox.x;
-    tMaterial.uniforms.radius.value = ringRadius * pixelsToWorld;
+    tMaterial.uniforms.radius.value = ringRadius;
     tMaterial.uniforms.sRadius.value = sphereRadius * pixelsToWorld;
     tMaterial.uniforms.scale.value = pixelsToWorld;
-    tMaterial.uniforms.extensionLimit.value = extensionLimit;
     tMaterial.uniforms.meshStart.value = tVerts.getZ(0)
+    tMaterial.uniforms.meshStartY.value = tVerts.getY(0)
+    console.log("shader vars ,", ringRadius, pixelsToWorld, tVerts.getZ(0), boundingBox.x)
 
     textGeometry.setAttribute("xPos", new THREE.Float32BufferAttribute(tX, 1))
 
@@ -100,18 +90,9 @@ export function createTextRing({
     // text.position.copy(position).add(new THREE.Vector3(ringRadius * pixelsToWorld, ringRadius * pixelsToWorld, 0));
     text.scale.set(pixelsToWorld, pixelsToWorld, pixelsToWorld)
 
-    const textPos = new THREE.Vector3()
-    const rotationVector = new THREE.Vector3(-1, 0, 0)
-    text.onAnimate = (delta, spherePos, sphereToPointer, extrusion) => {
-        //textPos.copy(spherePos)
-        //textPos.add(sphereToPointer.clone().multiplyScalar(sphereRadius * pixelsToWorld).multiplyScalar(relativeHeight || 1))
+    text.onAnimate = (delta, extrusion) => {
         // @ts-ignore
         text.material.uniforms.time.value += delta * 0.5// * (0.2 + extrusion / 100);
-        // @ts-ignore
-        text.material.uniforms.extrusion.value = extrusion
-        //text.lookAt(spherePos)
-        //text.rotateOnAxis(rotationVector, 0.5 * Math.PI)
-        //text.position.copy(textPos)
     }
 
     return text
