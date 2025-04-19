@@ -21,16 +21,18 @@ window.addEventListener("resize", () => {
 })
 
 // TODO synchronously loading fonts, should change
+console.log("loading fonts")
 const fonts = await loadFonts()//.then(fonts => {
+console.log("finishe dloading fonts ")
 
-const stats = new Stats()
+//const stats = new Stats()
 // the number will decide which information will be displayed
 // 0 => FPS Frames rendered in the last second. The higher the number the better.
 // 1 => MS Milliseconds needed to render a frame. The lower the number the better.
 // 2 => MB MBytes of allocated memory. (Run Chrome with --enable-precise-memory-info)
 // 3 => CUSTOM User-defined panel support.
-stats.showPanel(0)
-document.body.appendChild(stats.dom)
+//stats.showPanel(0)
+//document.body.appendChild(stats.dom)
 
 camera.position.z = 1000
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -190,7 +192,8 @@ sphere.material.uniforms.scale.value = pixelsToWorld
 // })
 // scene.add(textRingC)
 
-const textRingContent = "☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺"
+//const textRingContent = "☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺"
+const textRingContent = "fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂"
 const textRing = createOrbitalText({
     content: textRingContent,
     font: fonts.absans,
@@ -292,11 +295,11 @@ async function loadFonts(): Promise<Fonts> {
     const fontAbsans = await loader.loadAsync('/public/fonts/Absans_Regular.json', function(font) {
     });
 
-    const fontIBM = await loader.loadAsync('/public/fonts/IBMPlexMono-LightItalic.json', function(font) {
-    });
+    // const fontIBM = await loader.loadAsync('/public/fonts/IBMPlexMono-LightItalic.json', function(font) {
+    // });
 
     fonts.absans = fontAbsans
-    fonts.ibm = fontIBM
+    // fonts.ibm = fontIBM
 
     return fonts
 }

@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>⁂ fbold.dev</title>
     <link href='./src/style.css' rel='stylesheet'>
 </head>
 
 <body>
-    <div id="root" class="absolute">
+    <div id="root" class="absolute overflow-clip">
         <div id="menu" class="absolute p-4 px-6 text-end top-0 right-0 text-4xl md:text-7xl flex flex-col gap-2 ">
             <div class="cursor-pointer absolute right-6 hover:text-red-700 transition-colors"
                 onclick="navigation.back()">←back
@@ -22,30 +22,59 @@
             <div class="cursor-pointer hover:text-red-700 transition-colors">contact</div>
             <div class="cursor-pointer hover:text-red-700 transition-colors">gh / in / x</div>
         </div>
-        <div id="projects" class="md:w-1/2 w-[calc(100%-3rem)] full h-full absolute top-24 right-6 flex flex-col gap-3">
-            <div class="row h-1/3 flex gap-3">
-                <div class="w-full h-full border-2 border-white flex flex-col bg-black">
-                    <h3 class="text-xl">Project Name</h3>
-                    <p class="mt-auto self-end">Example prpject descirption that will go here.</p>
-                </div>
-                <div class="w-full h-full border-2 border-white bg-black ">
-                    posjdf
-                </div>
+        <div id="contact"
+            class="md:w-1/2 w-[calc(100%-3rem)] h-[calc(100%-var(--spacing)*24)] overflow-y-auto absolute pb-12 top-24 right-6 flex flex-col gap-3">
+        </div>
+        <div id="projects"
+            class="md:w-1/2 w-[calc(100%-3rem)] h-[calc(100%-var(--spacing)*24)] overflow-y-auto absolute pb-12 top-24 right-6 flex flex-col gap-3">
+            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md bg-blend-darken">
+                <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
+                    href="https://gatherbun.com/">Gatherbun ↗</a>
+                <p class="mt-auto self-end text-end">NextJS app that uses the Prisma ORM with a PostgreSQL database, all
+                    containerized with docker and hosted on VPS with CI/CD using GH Actions and using Stripe as a
+                    payment processor.</p>
             </div>
-            <div class="row h-1/3 flex gap-3">
-                <div class="w-full border-2 border-white">
-                    posjdf
-                </div>
-                <div class="w-full border-2 border-white">
-                    posjdf
-                </div>
+            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md bg-blend-darken">
+                <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
+                    href="https://gatherbun.com/">Gatherbun ↗</a>
+                <p class="mt-auto self-end text-end">NextJS app that uses the Prisma ORM with a PostgreSQL database, all
+                    containerized with docker and hosted on VPS with CI/CD using GH Actions and using Stripe as a
+                    payment processor.</p>
             </div>
-
+            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md bg-blend-darken">
+                <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
+                    href="https://gatherbun.com/">Gatherbun ↗</a>
+                <p class="mt-auto self-end text-end">NextJS app that uses the Prisma ORM with a PostgreSQL database, all
+                    containerized with docker and hosted on VPS with CI/CD using GH Actions and using Stripe as a
+                    payment processor.</p>
+            </div>
+            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md bg-blend-darken">
+                <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
+                    href="https://gatherbun.com/">Gatherbun ↗</a>
+                <p class="mt-auto self-end text-end">NextJS app that uses the Prisma ORM with a PostgreSQL database, all
+                    containerized with docker and hosted on VPS with CI/CD using GH Actions and using Stripe as a
+                    payment processor.</p>
+            </div>
+            <div class="row w-full h-1/3 p-3 flex flex-col backdrop-blur-md">
+                <a class="text-4xl hover:text-red-800 transition-colors" target="_blank"
+                    href="https://gatherbun.com/">futile.me ↗</a>
+                <p class="mt-auto self-end">Example prpject descirption that will go here.</p>
+            </div>
+            <div class="row w-full h-1/3 p-3 flex flex-col backdrop-blur-md">
+                <a class="text-4xl hover:text-red-800 transition-colors" target="_blank"
+                    href="https://gatherbun.com/">Web3 Integration Project ↗</a>
+                <p class="mt-auto self-end">Example prpject descirption that will go here.</p>
+            </div>
+            <div class="row w-full h-1/3 p-3 flex flex-col backdrop-blur-md">
+                <a class="text-4xl hover:text-red-800 transition-colors" target="_blank"
+                    href="https://gatherbun.com/">Web3 Integration Project ↗</a>
+                <p class="mt-auto self-end">Example prpject descirption that will go here.</p>
+            </div>
         </div>
         <div class="absolute bottom-4 left-4 text-black text-left">
-            <h2 class="font-[Absans] italic text-4xl place-self-end mt-auto">fbold.dev</h2>
-            <a class="hidden text-lg hover:cursor-pointer hover:underline"
-                href="https://www.collletttivo.it/typefaces/absans" target="_blank">what is this beautiful
+            <!-- <h2 class="font-[Absans] italic text-4xl place-self-end mt-auto">fbold.dev</h2> -->
+            <a class="text-lg hover:cursor-pointer hover:underline" href="https://www.collletttivo.it/typefaces/absans"
+                target="_blank">what is this beautiful
                 typeface?</a>
         </div>
     </div>

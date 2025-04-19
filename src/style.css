@@ -99,6 +99,10 @@ body {
     transform: translateY(0)
 }
 
+#projects .row {
+    background-color: rgba(1, 1, 1, 0.4);
+}
+
 #projects .row:nth-child(2) {
     transition: transform 400ms;
     transition-delay: 100ms;
@@ -106,5 +110,15 @@ body {
 }
 
 #projects.show .row:nth-child(2) {
+    transform: translateY(0);
+}
+
+#projects .row:nth-child(3) {
+    transition: transform 400ms;
+    transition-delay: 200ms;
+    transform: translateY(100vh);
+}
+
+#projects.show .row:nth-child(3) {
     transform: translateY(0);
 }
