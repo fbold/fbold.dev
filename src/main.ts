@@ -193,7 +193,7 @@ sphere.material.uniforms.scale.value = pixelsToWorld
 // scene.add(textRingC)
 
 //const textRingContent = "☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺"
-const textRingContent = "fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂"
+const textRingContent = "bold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ f"
 const textRing = createOrbitalText({
     content: textRingContent,
     font: fonts.absans,

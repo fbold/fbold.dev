@@ -11,7 +11,7 @@
 
 <body>
     <div id="root" class="absolute overflow-clip">
-        <div id="menu" class="absolute p-4 px-6 text-end top-0 right-0 text-4xl md:text-7xl flex flex-col gap-2 ">
+        <div id="menu" class="absolute p-4 px-6 text-end top-0 right-0 text-6xl md:text-7xl flex flex-col gap-2 ">
             <div class="cursor-pointer absolute right-6 hover:text-red-700 transition-colors"
                 onclick="navigation.back()">←back
             </div>
@@ -19,15 +19,31 @@
                 onclick="navigation.to('projects')">
                 projects
             </div>
-            <div class="cursor-pointer hover:text-red-700 transition-colors">contact</div>
+            <div class="cursor-pointer relative hover:text-red-700 transition-colors"
+                onclick="navigation.to('contact')">
+                contact
+            </div>
             <div class="cursor-pointer hover:text-red-700 transition-colors">gh / in / x</div>
         </div>
         <div id="contact"
             class="md:w-1/2 w-[calc(100%-3rem)] h-[calc(100%-var(--spacing)*24)] overflow-y-auto absolute pb-12 top-24 right-6 flex flex-col gap-3">
+            <div class="text-xl w-full flex flex-col gap-2 backdrop-blur-md p-3">
+                <p class="text-xl">Contact me direclty using this form</p>
+                <form class="flex flex-col gap-2">
+                    <span class="flex flex-row">
+                        <input class="border border-white p-2 grow" type="email" placeholder="your@email.pls" />
+                        <button type="submit" class="px-4 cursor-pointer bg-white text-black">SEND</button>
+                    </span>
+                    <textarea class="text-md p-2 min-h-40 border border-white"></textarea>
+                </form>
+                <p>Or just shoot me an email (click to copy - not a mailto link): <br />
+                    <span>fbold.dev@gmail.com</span>
+                </p>
+            </div>
         </div>
         <div id="projects"
-            class="md:w-1/2 w-[calc(100%-3rem)] h-[calc(100%-var(--spacing)*24)] overflow-y-auto absolute pb-12 top-24 right-6 flex flex-col gap-3">
-            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md bg-blend-darken">
+            class="md:w-1/2 w-[calc(100%-3rem)] h-[calc(100%-var(--spacing)*(24+12))] overflow-y-auto absolute top-24 right-6 flex flex-col gap-3">
+            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md">
                 <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
                     href="https://gatherbun.com/">Gatherbun ↗</a>
                 <p class="mt-auto self-end text-end">NextJS app that uses the Prisma ORM with a PostgreSQL database, all

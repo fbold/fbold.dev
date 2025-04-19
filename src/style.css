@@ -90,6 +90,19 @@ body {
     opacity: 0;
 }
 
+#contact {
+    transform: translateY(100vh);
+    transition: transform 400ms;
+}
+
+#contact.show {
+    transform: translateY(0)
+}
+
+#contact div {
+    background-color: rgba(1, 1, 1, 0.4);
+}
+
 #projects {
     transform: translateY(100vh);
     transition: transform 400ms;
