@@ -86,7 +86,7 @@ body {
 
 #menu.hide div:nth-child(1) {
     opacity: 1;
-    z-index: 10;
+    z-index: 30;
 }
 
 #menu.hide div:nth-child(2) {
