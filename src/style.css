@@ -44,6 +44,19 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+html * {
+    scrollbar-width: thin;
+
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--bruh);
+}
+
+* pre::-webkit-scrollbar-thumb {
+    background: var(--bruh);
+}
+
 body {
     margin: 0;
     padding: 0;

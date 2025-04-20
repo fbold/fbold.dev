@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div id="root" class="absolute overflow-clip">
+    <div id="root" class="absolute overflow-clip overflow-y-auto ">
         <div id="menu" class="absolute p-4 px-6 text-end top-0 right-0 text-6xl md:text-7xl flex flex-col gap-2 ">
             <div class="cursor-pointer absolute right-6 hover:text-red-700 transition-colors"
                 onclick="navigation.back()">←back
@@ -23,26 +23,34 @@
                 onclick="navigation.to('contact')">
                 contact
             </div>
-            <div class="cursor-pointer hover:text-red-700 transition-colors">gh / in / x</div>
+            <div class="">
+                <a class="hover:text-red-700 transition-colors" target="_blank"
+                    href="https://github.com/fbold">github</a>
+            </div>
+            <!-- <div class=""> -->
+            <!--     <a class="hover:text-red-700 transition-colors" target="_blank" href="https://github.com/fbold">gh</a> / -->
+            <!--     <a class="hover:text-red-700 transition-colors" target="_blank" -->
+            <!--         href="https://linkedin.com/in/fbold">in</a> -->
+            <!-- </div> -->
         </div>
         <div id="contact"
-            class="md:w-1/2 w-[calc(100%-3rem)] h-[calc(100%-var(--spacing)*24)] overflow-y-auto absolute pb-12 top-24 right-6 flex flex-col gap-3">
+            class="md:w-1/2 w-[calc(100%-3rem)] h-[calc(100%-var(--spacing)*24)] overflow-y-auto fixed pb-12 top-24 right-6 flex flex-col gap-3">
             <div class="text-xl w-full flex flex-col gap-2 backdrop-blur-md p-3">
-                <p class="text-xl">Contact me direclty using this form</p>
+                <p class="text-xl">Contact me directly using this form</p>
                 <form class="flex flex-col gap-2">
                     <span class="flex flex-row">
                         <input class="border border-white p-2 grow" type="email" placeholder="your@email.pls" />
                         <button type="submit" class="px-4 cursor-pointer bg-white text-black">SEND</button>
                     </span>
-                    <textarea class="text-md p-2 min-h-40 border border-white"></textarea>
+                    <textarea placeholder="In English, Catalan, or Spanish"
+                        class="text-md p-2 min-h-40 border border-white"></textarea>
                 </form>
                 <p>Or just shoot me an email (click to copy - not a mailto link): <br />
                     <span>fbold.dev@gmail.com</span>
                 </p>
             </div>
         </div>
-        <div id="projects"
-            class="md:w-1/2 w-[calc(100%-3rem)] h-[calc(100%-var(--spacing)*(24+12))] overflow-y-auto absolute top-24 right-6 flex flex-col gap-3">
+        <div id="projects" class="md:w-1/2 w-[calc(100%-3rem)] pb-20 fixed top-24 right-6 flex flex-col gap-3">
             <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md">
                 <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
                     href="https://gatherbun.com/">Gatherbun ↗</a>
@@ -87,7 +95,7 @@
                 <p class="mt-auto self-end">Example prpject descirption that will go here.</p>
             </div>
         </div>
-        <div class="absolute bottom-4 left-4 text-black text-left">
+        <div class="fixed bottom-4 left-4 text-black text-left">
             <!-- <h2 class="font-[Absans] italic text-4xl place-self-end mt-auto">fbold.dev</h2> -->
             <a class="text-lg hover:cursor-pointer hover:underline" href="https://www.collletttivo.it/typefaces/absans"
                 target="_blank">what is this beautiful

@@ -14,16 +14,25 @@ export const setupNavigation = () => {
         console.log(location)
         menu.classList.add("hide")
 
-        if (location === "projects")
+        if (location === "projects") {
             projects.classList.add("show")
-        if (location === "contact")
+            projects.classList.remove("fixed")
+            projects.classList.add("absolute")
+        } if (location === "contact") {
             contact.classList.add("show")
+            contact.classList.remove("!fixed")
+            contact.classList.add("absolute")
+        }
     }
 
     //@ts-ignore
     window.navigation.back = () => {
         menu.classList.remove("hide")
         projects.classList.remove("show")
+        projects.classList.add("fixed")
+        projects.classList.add("absolute")
         contact.classList.remove("show")
+        contact.classList.add("fixed")
+        contact.classList.add("absolute")
     }
 }
