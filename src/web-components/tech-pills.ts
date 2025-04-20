@@ -6,7 +6,6 @@ class TechPills extends HTMLElement {
             .map(w => w.trim())
             .filter(Boolean)
 
-        console.log("wordsss", words)
 
         const container = document.getElementById("tech-pill-container-template").content
         const containerClone = container.cloneNode(true)
@@ -15,9 +14,7 @@ class TechPills extends HTMLElement {
         words.forEach(word => {
             const pillClone = pill.cloneNode(true)
             const finishedPill = pillClone.querySelector(".tech-pill")
-            console.log("finished pill", finishedPill)
             finishedPill.textContent = word
-            console.log("container clone ocntainer", containerClone.querySelector(".tech-pill-container"))
             containerClone.querySelector(".tech-pill-container").appendChild(pillClone)
         })
 

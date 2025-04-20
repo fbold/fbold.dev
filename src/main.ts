@@ -7,9 +7,16 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { setupNavigation } from "./js/navigation.ts"
 import { loadWebComponents } from "./web-components/tech-pills.ts"
 import { createOrbitalText } from './js/orbital-text.ts';
+import { FontDependants, loadFontDependants } from './js/font-dependants.ts';
 
 setupNavigation()
 loadWebComponents()
+
+// this promise loads the fonts that need to be loaded
+// and the dependants are created and added to scene
+// with their .animate() property returned for use in animation loop
+const onFontsLoaded = loadFontDependants()
+
 
 const width = window.innerWidth
 const height = window.innerHeight
@@ -20,11 +27,6 @@ const renderer = new THREE.WebGLRenderer();
 window.addEventListener("resize", () => {
     renderer.setSize(window.innerWidth, window.innerHeight)
 })
-
-// TODO synchronously loading fonts, should change
-console.log("loading fonts")
-const fonts = await loadFonts()//.then(fonts => {
-console.log("finishe dloading fonts ")
 
 //const stats = new Stats()
 // the number will decide which information will be displayed
@@ -52,12 +54,8 @@ if (mobile) {
     sOffsetX = 0.5 * width
 } else {
     sRadius = Math.min(0.6 * width, 0.6 * height)
-    console.log("width, height")
-    console.log(width, height)
-    console.log(0.6 * width, 0.7 * height)
     sOffsetX = 0
 }
-console.log(sRadius, sOffsetX)
 
 // TODO fix/add/remove those last func params, no clue what the values are doing, trying to optimize vertex count
 const geometry = new THREE.SphereGeometry(sRadius, sRadius / 4, sRadius / 4, 0 * Math.PI, 1 * Math.PI);
@@ -140,73 +138,15 @@ sphere.material.uniforms.radius.value = sRadius * pixelsToWorld;
 // need to specify scale, because it doesn't apply to vertices in shader
 // so any transformation to their pos isn't consistent with radius [without this]
 sphere.material.uniforms.scale.value = pixelsToWorld
-/////////////////////////////////
-// TEXT
-/////////////////////////////////
 
-// const textRingZContent = "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
-// const textRingZ = createTextRing({
-//     content: textRingZContent,
-//     font: fonts.ibm,
-//     position: worldPos,
-//     ringRadius: sRadius / 1,
-//     extensionLimit: 0.1,
-//     sphereRadius: sRadius,
-//     relativeHeight: 0.85,
-//     pixelsToWorld,
-// })
-// scene.add(textRingZ)
-//
-// const textRingAContent = "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
-// const textRingA = createTextRing({
-//     content: textRingAContent,
-//     font: fonts.ibm,
-//     position: worldPos,
-//     ringRadius: sRadius / 1.5,
-//     extensionLimit: 0.22,
-//     sphereRadius: sRadius,
-//     pixelsToWorld,
-// })
-// scene.add(textRingA)
+// TXT RING (FONT-DEPENDANT)
+let fontDependants: FontDependants
+onFontsLoaded.then(fnct => {
+    fontDependants = fnct({ sRadius, sphere, pixelsToWorld })
+    // console.log("FONT DEPEDANTS", fontDependants)
 
-// const textRingBContent = "<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>"
-// const textRingB = createTextRing({
-//     content: textRingBContent,
-//     font: fonts.ibm,
-//     position: worldPos,
-//     ringRadius: sRadius / 3,
-//     extensionLimit: 0.5,
-//     sphereRadius: sRadius,
-//     pixelsToWorld,
-// })
-// scene.add(textRingB)
-
-// const textRingCContent = "<><><><><><><><><><><><><><><><><><><><><><>"
-// const textRingC = createTextRing({
-//     content: textRingCContent,
-//     font: fonts.ibm,
-//     position: worldPos,
-//     ringRadius: sRadius / 5,
-//     sphereRadius: sRadius,
-//     extensionLimit: 0.9,
-//     pixelsToWorld,
-// })
-// scene.add(textRingC)
-
-//const textRingContent = "☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺"
-const textRingContent = "bold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ f"
-const textRing = createOrbitalText({
-    content: textRingContent,
-    font: fonts.absans,
-    ringRadius: sRadius,
-    sphereRadius: sRadius,
-    pixelsToWorld,
+    scene.add(fontDependants.textRing)
 })
-
-textRing.position.copy(sphere.position.clone().add(new THREE.Vector3(0, 0, 0)))//-0.2 * sRadius * pixelsToWorld, 0)))
-textRing.position.add(new THREE.Vector3(0 * sRadius * pixelsToWorld * 0.5, 0.1 * sRadius * pixelsToWorld, 0))
-// textRing.rotateOnAxis(new THREE.Vector3(0, 0, 1), -0.25 * Math.PI)
-scene.add(textRing)
 
 
 
@@ -218,8 +158,6 @@ window.addEventListener("mousemove", (e) => {
     // sphere pos to mouse pos
     sphereToPointer.copy(worldPointerPos.sub(sphere.position))
 
-    // console.log(sphereToPointer.length(), pixelsToWorld * sRadius)
-    //console.log(Math.max(0, sphereToPointer.length() - pixelsToWorld * sRadius))
 })
 
 
@@ -239,7 +177,6 @@ function animate() {
 
     extrusion = Math.max((sphereToPointer.length() - sRadius * pixelsToWorld), 0);
     absoluteExtrusion = sphereToPointer.length();
-    //console.log("ABSOLUTE", absoluteExtrusion, sRadius * pixelsToWorld)
 
     delta = clock.getDelta()
     frame += 1 * delta
@@ -257,7 +194,7 @@ function animate() {
     // textRingA.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
     // textRingB.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
     // textRingC.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
-    textRing.onAnimate(delta, absoluteExtrusion)
+    fontDependants?.textRing?.onAnimate(delta, absoluteExtrusion)
 
     // stats.end()
 
@@ -283,25 +220,4 @@ function windowToWorld(event: MouseEvent, depth: number = 1000) {
     return pos
 }
 
-
-type Fonts = {
-    [name: string]: Font
-}
-
-
-async function loadFonts(): Promise<Fonts> {
-    const loader = new FontLoader();
-
-    const fonts: Fonts = {}
-    const fontAbsans = await loader.loadAsync('/fonts/Absans_Regular.json', function(font) {
-    });
-
-    // const fontIBM = await loader.loadAsync('/public/fonts/IBMPlexMono-LightItalic.json', function(font) {
-    // });
-
-    fonts.absans = fontAbsans
-    // fonts.ibm = fontIBM
-
-    return fonts
-}
 

@@ -13,7 +13,8 @@ interface CreateTextRingParams {
     sphereRadius: number,
     pixelsToWorld: number,
 }
-interface MyText extends THREE.Mesh {
+
+export interface OrbitalTextObject extends THREE.Mesh {
     onAnimate?: (delta: number, extrusion: number) => void
 }
 
@@ -23,7 +24,7 @@ export function createOrbitalText({
     ringRadius,
     sphereRadius,
     pixelsToWorld,
-}: CreateTextRingParams): MyText {
+}: CreateTextRingParams): OrbitalTextObject {
     const textGeometry = new TextGeometry(content, {
         font: font,
         size: Math.round(sphereRadius * 0.05),
@@ -81,12 +82,11 @@ export function createOrbitalText({
     tMaterial.uniforms.scale.value = pixelsToWorld;
     tMaterial.uniforms.meshStart.value = tVerts.getZ(0)
     tMaterial.uniforms.meshStartY.value = tVerts.getY(0)
-    console.log("shader vars ,", ringRadius, pixelsToWorld, tVerts.getZ(0), boundingBox.x)
 
     textGeometry.setAttribute("xPos", new THREE.Float32BufferAttribute(tX, 1))
 
     // POSITIONING TEXT RING
-    const text: MyText = new THREE.Mesh(textGeometry, tMaterial);
+    const text: OrbitalTextObject = new THREE.Mesh(textGeometry, tMaterial);
     // text.position.copy(position).add(new THREE.Vector3(ringRadius * pixelsToWorld, ringRadius * pixelsToWorld, 0));
     text.scale.set(pixelsToWorld, pixelsToWorld, pixelsToWorld)
 
