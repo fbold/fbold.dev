@@ -10,6 +10,17 @@
 </head>
 
 <body>
+    <!-- TEMPLATES -->
+    <template id="tech-pill-container-template">
+        <div class="tech-pill-container flex flex-row gap-2 mb-2">
+        </div>
+    </template>
+    <template id="tech-pill-template">
+        <div class="tech-pill border border-white text-sm px-1">
+        </div>
+    </template>
+
+    <!-- TEMPLATES -->
     <div id="root" class="absolute overflow-clip overflow-y-auto ">
         <div id="menu" class="absolute p-4 px-6 text-end top-0 right-0 text-6xl md:text-7xl flex flex-col gap-2 ">
             <div class="cursor-pointer absolute right-6 hover:text-red-700 transition-colors"
@@ -58,7 +69,7 @@
                 class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md border-2 border-dashed border-stone-700 opacity-90">
                 <a class="flex text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
                     href="https://gatherbun.com/">islands.futile.me ↗ <span class="ml-auto text-2xl">[WIP]</span></a>
-                <tech-pills words="prisma, nextjs"></tech-pills>
+                <tech-pills words="Golang, HTMX"></tech-pills>
                 <p class="mt-auto self-end text-end">A public collective garden. You will be able to
                     claim "islands" and attach a message to them, then other users can plant flowers on your island to
                     increase its lifespan. Islands all eventually fall back into the ocean, leaving room for new ones to
@@ -67,6 +78,7 @@
             <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md">
                 <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
                     href="https://gatherbun.com/">Gatherbun ↗</a>
+                <tech-pills words="NextJS, Postgres, Stripe, Prisma"></tech-pills>
                 <p class="mt-auto self-end text-end">NextJS app that uses the Prisma ORM with a PostgreSQL database, all
                     containerized with docker and hosted on VPS with CI/CD using GH Actions and using Stripe as a
                     payment processor.</p>
@@ -74,6 +86,7 @@
             <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md bg-blend-darken">
                 <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
                     href="https://futile.me/">futile.me ↗</a>
+                <tech-pills words="NextJS, iron-session, TS"></tech-pills>
                 <p class="mt-auto self-end text-end">futile.me is a minimal writing platform built with the TipTap
                     editor, custom CSS, and classic username + password auth via iron-session. It skips email in favor
                     of a 12-word mnemonic recovery system for security and ease of use.</p>
@@ -81,16 +94,10 @@
             <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md bg-blend-darken">
                 <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
                     href="https://github.com/fbold/crypto-hoards/">Crypto Hoards ↗</a>
+                <tech-pills words="React, Sol JSON RPC"></tech-pills>
                 <p class="mt-auto self-end text-end">Crypto Hoards was a Solana Web3-connected web app that connected to
                     your solana wallet and displayed your media NFTs. The code is available on my GitHub as it is now
                     offline, was a project to dip my toes into web3.</p>
-            </div>
-            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md bg-blend-darken">
-                <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
-                    href="https://gatherbun.com/">Gatherbun ↗</a>
-                <p class="mt-auto self-end text-end">NextJS app that uses the Prisma ORM with a PostgreSQL database, all
-                    containerized with docker and hosted on VPS with CI/CD using GH Actions and using Stripe as a
-                    payment processor.</p>
             </div>
         </div>
         <div class="fixed bottom-4 left-4 text-black text-left">

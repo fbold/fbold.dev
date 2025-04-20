@@ -1,30 +1,30 @@
 class TechPills extends HTMLElement {
 
-    constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-    }
-
     connectedCallback() {
         const words = (this.getAttribute('words') || '')
             .split(',')
             .map(w => w.trim())
-            .filter(Boolean);
+            .filter(Boolean)
 
         console.log("wordsss", words)
 
-        const container = document.createElement('div');
+        const container = document.getElementById("tech-pill-container-template").content
+        const containerClone = container.cloneNode(true)
+        const pill = document.getElementById("tech-pill-template").content
 
         words.forEach(word => {
-            const span = document.createElement('span');
-            span.textContent = word;
-            container.appendChild(span);
-        });
+            const pillClone = pill.cloneNode(true)
+            const finishedPill = pillClone.querySelector(".tech-pill")
+            console.log("finished pill", finishedPill)
+            finishedPill.textContent = word
+            console.log("container clone ocntainer", containerClone.querySelector(".tech-pill-container"))
+            containerClone.querySelector(".tech-pill-container").appendChild(pillClone)
+        })
 
-        this.shadowRoot.append(container);
+        this.append(containerClone)
     }
 }
 
-export const loadWebComponents = () => window.customElements.define('tech-pills', TechPills);
+export const loadWebComponents = () => window.customElements.define('tech-pills', TechPills)
 
 
