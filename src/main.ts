@@ -5,10 +5,11 @@ import { createTextRing } from './js/text-ring.ts';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import { setupNavigation } from "./js/navigation.ts"
+import { loadWebComponents } from "./web-components/tech-pills.ts"
 import { createOrbitalText } from './js/orbital-text.ts';
 
 setupNavigation()
-
+loadWebComponents()
 
 const width = window.innerWidth
 const height = window.innerHeight
@@ -292,7 +293,7 @@ async function loadFonts(): Promise<Fonts> {
     const loader = new FontLoader();
 
     const fonts: Fonts = {}
-    const fontAbsans = await loader.loadAsync('/public/fonts/Absans_Regular.json', function(font) {
+    const fontAbsans = await loader.loadAsync('/fonts/Absans_Regular.json', function(font) {
     });
 
     // const fontIBM = await loader.loadAsync('/public/fonts/IBMPlexMono-LightItalic.json', function(font) {

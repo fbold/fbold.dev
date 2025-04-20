@@ -2,31 +2,31 @@
 
 @font-face {
     font-family: "Absans";
-    src: url("/public/fonts/CLT Absans/web/Absans-Regular.woff2") format("woff2");
+    src: url("/fonts/CLT Absans/web/Absans-Regular.woff2") format("woff2");
     font-display: swap;
 }
 
 @font-face {
     font-family: "IBMPlexMonoB";
-    src: url("/public/fonts/IBM_Plex_Mono/IBMPlexMono-SemiBold.ttf") format("truetype");
+    src: url("/fonts/IBM_Plex_Mono/IBMPlexMono-SemiBold.ttf") format("truetype");
     font-display: swap;
 }
 
 @font-face {
     font-family: "IBMPlexMono";
-    src: url("/public/fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf") format("truetype");
+    src: url("/fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf") format("truetype");
     font-display: swap;
 }
 
 @font-face {
     font-family: "IBMPlexMonoEL";
-    src: url("/public/fonts/IBM_Plex_Mono/IBMPlexMono-ExtraLight.ttf") format("truetype");
+    src: url("/fonts/IBM_Plex_Mono/IBMPlexMono-ExtraLight.ttf") format("truetype");
     font-display: swap;
 }
 
 @font-face {
     font-family: "IBMPlexMonoItalic";
-    src: url("/public/fonts/IBM_Plex_Mono/IBMPlexMono-Italic.ttf") format("truetype");
+    src: url("/fonts/IBM_Plex_Mono/IBMPlexMono-Italic.ttf") format("truetype");
     font-display: swap;
 }
 
