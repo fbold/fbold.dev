@@ -46,7 +46,10 @@
                         class="text-md p-2 min-h-40 border border-white"></textarea>
                 </form>
                 <p>Or just shoot me an email (click to copy - not a mailto link): <br />
-                    <span>fbold.dev@gmail.com</span>
+                    <span class="cursor-pointer"
+                        onclick="navigator.clipboard.writeText('fbold.dev@gmail.com').then(() => {this.innerHTML = '<x class=\'underline\'>fbold.dev@gmail.com</x> copied!'; setTimeout(()=>{this.innerHTML = '<x class=\'underline\'>fbold.dev@gmail.com</x>';}, 2000)}).catch(() => this.innerHTML = '<x class=\'underline\'>fbold.dev@gmail.com</x> oops (couldn\'t copy)!')">
+                        <x class="underline">fbold.dev@gmail.com</x>
+                    </span>
                 </p>
             </div>
         </div>
