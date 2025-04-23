@@ -148,3 +148,13 @@ body {
 #projects.show .row:nth-child(3) {
     transform: translateY(0);
 }
+
+#projects .row:nth-child(4) {
+    transition: transform 400ms;
+    transition-delay: 300ms;
+    transform: translateY(100vh);
+}
+
+#projects.show .row:nth-child(4) {
+    transform: translateY(0);
+}
