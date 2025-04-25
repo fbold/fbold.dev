@@ -26,8 +26,8 @@ void main() {
     // or at least sort out the lack of spacing on the wrap
     // fixes loss-of-depth issue with second term, meshStart is provided
     // as uniform, just z component of first vertex then transform around circle
-    float offset = time;
-    float angle = 2.0 * M_PI * xPos / length + offset;
+    float offset = time * 0.5;
+    float angle = 2.0 * M_PI * xPos / length - offset;
     float x = sin(angle) * (radius) + (position.z - meshStart) * sin(angle); // - (position.y - meshStartY) * 0.25;
     float z = cos(angle) * (radius) + (position.z - meshStart) * cos(angle); // - (position.y - meshStartY) * 0.25;
 
@@ -35,7 +35,7 @@ void main() {
     // and the second components inside sin is for wave effect
     // divided b length and made multiple of pi so end matched start
     // NOTE THE NUMBER AT END OF SIN PAREN HAS TO BE EVEN
-    float offsetY = time * 4.0; //time;
+    float offsetY = -time * 4.0; //time;
     float y = sin(offsetY + M_PI * position.x / length * 16.0) * amplitude + position.y;
 
     vec3 newPosition = vec3(x, y, z);

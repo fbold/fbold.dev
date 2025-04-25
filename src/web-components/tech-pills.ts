@@ -7,15 +7,22 @@ class TechPills extends HTMLElement {
             .filter(Boolean)
 
 
-        const container = document.getElementById("tech-pill-container-template").content
-        const containerClone = container.cloneNode(true)
-        const pill = document.getElementById("tech-pill-template").content
+        const containerTemplate: HTMLElement | null = document.getElementById('tech-pill-container-template');
+        if (!(containerTemplate instanceof HTMLTemplateElement)) return;
+
+        const containerClone = containerTemplate.content.cloneNode(true) as DocumentFragment
+
+        const pillTemplate: HTMLElement | null = document.getElementById('tech-pill-template');
+        if (!(pillTemplate instanceof HTMLTemplateElement)) return;
+
 
         words.forEach(word => {
-            const pillClone = pill.cloneNode(true)
+            const pillClone = pillTemplate.content.cloneNode(true) as DocumentFragment
             const finishedPill = pillClone.querySelector(".tech-pill")
-            finishedPill.textContent = word
-            containerClone.querySelector(".tech-pill-container").appendChild(pillClone)
+            if (finishedPill) {
+                finishedPill.textContent = word;
+                containerClone.querySelector(".tech-pill-container").appendChild(pillClone)
+            }
         })
 
         this.append(containerClone)

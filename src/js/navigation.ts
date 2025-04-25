@@ -13,7 +13,7 @@ export const setupNavigation = () => {
 
         if (location === "projects") {
             projects.classList.add("show")
-            projects.classList.remove("fixed")
+            setTimeout(() => projects.classList.remove("fixed"), 600)
             projects.classList.add("absolute")
         } if (location === "contact") {
             contact.classList.add("show")

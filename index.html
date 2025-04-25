@@ -20,6 +20,18 @@
         </div>
     </template>
 
+    <template id="project-template">
+        <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md">
+            <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
+                href="https://gatherbun.com/">Gatherbun ↗</a>
+            <slot name="tech-pills"></slot>
+            <slot name="description" class="mt-auto self-end text-end">NextJS app that uses the Prisma ORM with a
+                PostgreSQL database, all
+                containerized with docker and hosted on VPS with CI/CD using GH Actions and using Stripe as a
+                payment processor.</slot>
+        </div>
+    </template>
+
     <!-- TEMPLATES -->
     <div id="root" class="absolute overflow-clip overflow-y-auto ">
         <div id="menu" class="absolute p-4 px-6 text-end top-0 right-0 text-6xl md:text-7xl flex flex-col gap-2 ">
@@ -38,6 +50,10 @@
                 <a class="hover:text-red-700 transition-colors" target="_blank"
                     href="https://github.com/fbold">github</a>
             </div>
+            <!-- <div class="flex"> -->
+            <!--     <a class="hover:text-red-700 transition-colors text-xl ml-auto mt-2" target="_blank" -->
+            <!--         href="https://github.com/fbold">what is this typeface?</a> -->
+            <!-- </div> -->
             <!-- <div class=""> -->
             <!--     <a class="hover:text-red-700 transition-colors" target="_blank" href="https://github.com/fbold">gh</a> / -->
             <!--     <a class="hover:text-red-700 transition-colors" target="_blank" -->
@@ -68,7 +84,7 @@
             class="md:w-1/2 w-[calc(100%-3rem)] max-w-4xl pb-20 fixed top-24 right-6 flex flex-col gap-3">
             <div
                 class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md border-2 border-dashed border-stone-700 opacity-90">
-                <a class="flex text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
+                <a class="flex text-3xl md:text-4xl hover:text-red-700 transition-colors" target="_blank"
                     href="https://gatherbun.com/">islands.futile.me ↗ <span class="ml-auto text-2xl">[WIP]</span></a>
                 <tech-pills words="Golang, HTMX"></tech-pills>
                 <p class="mt-auto self-end text-end">A public collective garden. You will be able to
@@ -76,24 +92,24 @@
                     increase its lifespan. Islands all eventually fall back into the ocean, leaving room for new ones to
                     appear.</p>
             </div>
-            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md">
-                <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
+            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md opacity-90">
+                <a class="text-3xl md:text-4xl hover:text-red-700 transition-colors" target="_blank"
                     href="https://gatherbun.com/">Gatherbun ↗</a>
                 <tech-pills words="NextJS, Postgres, Stripe, Prisma"></tech-pills>
                 <p class="mt-auto self-end text-end">NextJS app that uses the Prisma ORM with a PostgreSQL database, all
                     containerized with docker and hosted on VPS with CI/CD using GH Actions and using Stripe as a
                     payment processor.</p>
             </div>
-            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md bg-blend-darken">
-                <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
+            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md opacity-90">
+                <a class="text-3xl md:text-4xl hover:text-red-700 transition-colors" target="_blank"
                     href="https://futile.me/">futile.me ↗</a>
                 <tech-pills words="NextJS, iron-session, TS"></tech-pills>
                 <p class="mt-auto self-end text-end">futile.me is a minimal writing platform built with the TipTap
                     editor, custom CSS, and classic username + password auth via iron-session. It skips email in favor
                     of a 12-word mnemonic recovery system for security and ease of use.</p>
             </div>
-            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md bg-blend-darken">
-                <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
+            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md opacity-90">
+                <a class="text-3xl md:text-4xl hover:text-red-700 transition-colors" target="_blank"
                     href="https://github.com/fbold/crypto-hoards/">Crypto Hoards ↗</a>
                 <tech-pills words="React, Sol JSON RPC"></tech-pills>
                 <p class="mt-auto self-end text-end">Crypto Hoards was a Solana Web3-connected web app that connected to
@@ -101,7 +117,9 @@
                     offline, was a project to dip my toes into web3.</p>
             </div>
         </div>
-        <div class="fixed bottom-4 left-4 text-black text-left">
+        <h2 class="font-[Absans] text-4xl m-4 transition-[filter] hover:blur-xs duration-500 cursor-cell top-0 left-0">
+            fbold.dev</h2>
+        <div class="fixed bottom-4 right-4 text-white text-left">
             <!-- <h2 class="font-[Absans] italic text-4xl place-self-end mt-auto">fbold.dev</h2> -->
             <a class="text-lg hover:cursor-pointer hover:underline" href="https://www.collletttivo.it/typefaces/absans"
                 target="_blank">what is this beautiful

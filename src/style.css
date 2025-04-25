@@ -46,7 +46,7 @@
 
 html * {
     scrollbar-width: thin;
-
+    scrollbar-gutter: 4px;
 }
 
 *::-webkit-scrollbar-thumb {

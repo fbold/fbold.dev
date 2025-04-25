@@ -15,7 +15,7 @@ loadWebComponents()
 // this promise loads the fonts that need to be loaded
 // and the dependants are created and added to scene
 // with their .animate() property returned for use in animation loop
-const onFontsLoaded = loadFontDependants()
+//const onFontsLoaded = loadFontDependants()
 
 
 const width = window.innerWidth
@@ -141,12 +141,12 @@ sphere.material.uniforms.scale.value = pixelsToWorld
 
 // TXT RING (FONT-DEPENDANT)
 let fontDependants: FontDependants
-onFontsLoaded.then(fnct => {
-    fontDependants = fnct({ sRadius, sphere, pixelsToWorld })
-    // console.log("FONT DEPEDANTS", fontDependants)
-
-    scene.add(fontDependants.textRing)
-})
+// onFontsLoaded.then(fnct => {
+//     fontDependants = fnct({ sRadius, sphere, pixelsToWorld })
+//     // console.log("FONT DEPEDANTS", fontDependants)
+//
+//     scene.add(fontDependants.textRing)
+// })
 
 
 
@@ -171,6 +171,8 @@ let extrusion = 0;
 let absoluteExtrusion = 0;
 
 const sphereToPointerAllocation = new THREE.Vector3()
+const lastFrameSphereToPointer = new THREE.Vector3()
+const lerped = new THREE.Vector3()
 
 function animate() {
     // stats.begin()
@@ -178,9 +180,17 @@ function animate() {
     extrusion = Math.max((sphereToPointer.length() - sRadius * pixelsToWorld), 0);
     absoluteExtrusion = sphereToPointer.length();
 
+    if (lastFrameSphereToPointer.distanceTo(sphereToPointer) > sRadius / 10) {
+        lerped.lerp(sphereToPointer, 0.2)
+    }
+
+    extrusion = Math.max((sphereToPointer.length() - sRadius * pixelsToWorld), 0);
+    absoluteExtrusion = lerped.length();
+
+
     delta = clock.getDelta()
     frame += 1 * delta
-    material.uniforms.pointer_direction.value = sphereToPointer;
+    material.uniforms.pointer_direction.value = lerped;
     material.uniforms.extrusion.value = absoluteExtrusion
     material.uniforms.amplitude.value += delta * 10 //* 5 * Math.min(0.6 + extrusion, 1);
 
@@ -194,7 +204,7 @@ function animate() {
     // textRingA.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
     // textRingB.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
     // textRingC.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
-    fontDependants?.textRing?.onAnimate(delta, absoluteExtrusion)
+    //    fontDependants?.textRing?.onAnimate(delta, absoluteExtrusion)
 
     // stats.end()
 

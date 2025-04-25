@@ -1,5 +1,5 @@
 import { Object3D, Vector3 } from "three"
-import { Font, FontLoader } from "three/examples/jsm/Addons.js"
+import { Font, FontLoader, TTFLoader } from "three/examples/jsm/Addons.js"
 import { createOrbitalText, OrbitalTextObject } from "./orbital-text"
 
 type FontDependantDependencies = {
@@ -68,7 +68,8 @@ function onFontsLoaded(fonts: Fonts, props: FontDependantDependencies): FontDepe
     // scene.add(textRingC)
 
     //const textRingContent = "☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺☺"
-    const textRingContent = "bold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ f"
+    // const textRingContent = "bold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ fbold.dev ⁂ f"
+    const textRingContent = ", welcome to my website ☺ hello, welcome to my website ☺ hello, welcome to my website ☺ hello, welcome to my website ☺ hello, welcome to my website ☺ hello"
     const textRing = createOrbitalText({
         content: textRingContent,
         font: fonts.absans,
@@ -98,21 +99,23 @@ export const loadFontDependants = async (): Promise<(FontDependantDependencies) 
 
 
 type Fonts = {
-    [name: string]: Font
+    [name: string]: any
 }
 
 
 async function loadFonts(): Promise<Fonts> {
-    const loader = new FontLoader();
+    const loader = new TTFLoader();
+    //const loader = new Loader();
 
     const fonts: Fonts = {}
-    const fontAbsans = await loader.loadAsync('/fonts/Absans_Regular.json', function(font) {
+    //const fontAbsans = await loader.loadAsync('/this was the json one', function(font) {
+    const fontAbsans = await loader.loadAsync('/fonts/CLT Absans/desktop/Absans-Regular.otf', function(font) {
     });
 
     // const fontIBM = await loader.loadAsync('/public/fonts/IBMPlexMono-LightItalic.json', function(font) {
     // });
 
-    fonts.absans = fontAbsans
+    fonts.absans = new Font(fontAbsans,)
     // fonts.ibm = fontIBM
 
     return fonts
