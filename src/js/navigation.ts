@@ -1,6 +1,7 @@
-import { Event } from "three"
 
 const menu = document.getElementById("menu")
+const siteTitle = document.getElementById("site-title")
+const typefaceLink = document.getElementById("typeface-link")
 const projects = document.getElementById("projects")
 const contact = document.getElementById("contact")
 
@@ -10,6 +11,9 @@ export const setupNavigation = () => {
     //@ts-ignore
     window.navigation.to = (location: string) => {
         menu.classList.add("hide")
+        siteTitle.classList.add("hide")
+        typefaceLink.classList.add("hide")
+
 
         if (location === "projects") {
             projects.classList.add("show")
@@ -25,6 +29,9 @@ export const setupNavigation = () => {
     //@ts-ignore
     window.navigation.back = () => {
         menu.classList.remove("hide")
+        siteTitle.classList.remove("hide")
+        typefaceLink.classList.remove("hide")
+
         projects.classList.remove("show")
         projects.classList.add("fixed")
         projects.classList.add("absolute")

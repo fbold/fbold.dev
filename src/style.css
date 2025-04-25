@@ -103,6 +103,31 @@ body {
     opacity: 0;
 }
 
+
+#site-title {
+    transition-property: transform, filter;
+    transition-duration: 200ms;
+}
+
+#site-title.hide {
+    transform: translateY(100%);
+}
+
+@media (min-width: 768px) {
+    #site-title.hide {
+        transform: none;
+    }
+}
+
+#typeface-link {
+    transition-property: transform;
+    transition-duration: 200ms;
+}
+
+#typeface-link.hide {
+    transform: translateY(200%);
+}
+
 #contact {
     transform: translateY(100vh);
     transition: transform 400ms;
