@@ -137,7 +137,7 @@ sphere.material.uniforms.radius.value = sRadius * pixelsToWorld;
 sphere.material.uniforms.scale.value = pixelsToWorld
 
 // TXT RING (FONT-DEPENDANT)
-let fontDependants: FontDependants
+//let fontDependants: FontDependants
 // onFontsLoaded.then(fnct => {
 //     fontDependants = fnct({ sRadius, sphere, pixelsToWorld })
 //     // console.log("FONT DEPEDANTS", fontDependants)
@@ -189,6 +189,29 @@ window.addEventListener("touchcancel", (e) => {
     shrinkingDownOnLeave = true
     sphereToPointer.copy(sphereToPointer.normalize().multiplyScalar(sRadius * pixelsToWorld))
 })
+
+window.addEventListener("click", (e) => {
+    checkSphereClick(e.clientX, e.clientY)
+})
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2()
+
+function checkSphereClick(x: number, y: number) {
+    // Convert mouse position to normalized device coordinates (-1 to +1)
+    mouse.x = (x / window.innerWidth) * 2 - 1;
+    mouse.y = -(y / window.innerHeight) * 2 + 1;
+
+    // Update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
+
+    // Calculate objects intersecting the picking ray
+    const intersects = raycaster.intersectObject(sphere);
+
+    if (intersects.length > 0) {
+        console.log('Sphere clicked!', intersects[0]);
+    }
+}
 
 document.addEventListener('mouseout', (e) => {
     if (!e.relatedTarget) {
