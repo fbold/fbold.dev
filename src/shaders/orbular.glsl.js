@@ -29,7 +29,7 @@ void main() {
 
     // need to divide by scale because it is in non-adjusted world dimensions
     // NOTE it is limited to radius, ie range of extrusion_ is 0 to radius
-    float extrusion_ = min(max(extrusion - radius, 0.0) / scale, 1.5 * radius);
+    float extrusion_ = min(max(extrusion - 0.9 * radius, 0.0) / scale, 1.5 * radius);
 
     vec3 newPosition = position + normalize(normal) * vec3(level * displacement * extrusion_ + wobble * wobbleLevel) + normalize(normal) * slowWobble;
 

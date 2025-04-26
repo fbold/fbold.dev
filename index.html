@@ -61,12 +61,12 @@
             <!-- </div> -->
         </div>
         <div id="contact"
-            class="md:w-1/2 w-[calc(100%-3rem)] h-[calc(100%-var(--spacing)*24)] overflow-y-auto fixed pb-12 top-24 right-6 flex flex-col gap-3">
-            <div class="text-xl w-full flex flex-col gap-2 backdrop-blur-md p-3">
+            class="md:w-1/2 w-[calc(100%-3rem)] max-w-4xl h-[calc(100%-var(--spacing)*24)] overflow-y-auto fixed pb-12 top-24 right-6 flex flex-col gap-3">
+            <div class="text-xl w-full flex flex-col gap-2 backdrop-blur-md opacity-90 p-3">
                 <p class="text-xl">Contact me directly using this form</p>
                 <form class="flex flex-col gap-2">
-                    <span class="flex flex-row">
-                        <input class="border border-white p-2 grow" type="email" placeholder="your@email.pls" />
+                    <span class="flex flex-row w-full">
+                        <input class="border border-white p-2 w-full" type="email" placeholder="your@email.pls" />
                         <button type="submit" class="px-4 cursor-pointer bg-white text-black">SEND</button>
                     </span>
                     <textarea placeholder="In English, Catalan, or Spanish"
@@ -85,7 +85,8 @@
             <div
                 class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md border-2 border-dashed border-stone-700 opacity-90">
                 <a class="flex text-3xl md:text-4xl hover:text-red-700 transition-colors" target="_blank"
-                    href="https://gatherbun.com/">islands.futile.me ↗ <span class="ml-auto text-2xl">[WIP]</span></a>
+                    href="https://github.com/fbold/board">islands.futile.me ↗ <span
+                        class="ml-auto text-2xl">[WIP]</span></a>
                 <tech-pills words="Golang, HTMX"></tech-pills>
                 <p class="mt-auto self-end text-end">A public collective garden. You will be able to
                     claim "islands" and attach a message to them, then other users can plant flowers on your island to

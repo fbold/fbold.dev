@@ -28,14 +28,14 @@ window.addEventListener("resize", () => {
     renderer.setSize(window.innerWidth, window.innerHeight)
 })
 
-//const stats = new Stats()
+const stats = new Stats()
 // the number will decide which information will be displayed
 // 0 => FPS Frames rendered in the last second. The higher the number the better.
 // 1 => MS Milliseconds needed to render a frame. The lower the number the better.
 // 2 => MB MBytes of allocated memory. (Run Chrome with --enable-precise-memory-info)
 // 3 => CUSTOM User-defined panel support.
-//stats.showPanel(0)
-//document.body.appendChild(stats.dom)
+stats.showPanel(0)
+document.body.appendChild(stats.dom)
 
 camera.position.z = 1000
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -175,7 +175,7 @@ const lastFrameSphereToPointer = new THREE.Vector3()
 const lerped = new THREE.Vector3()
 
 function animate() {
-    // stats.begin()
+    stats.begin()
 
     extrusion = Math.max((sphereToPointer.length() - sRadius * pixelsToWorld), 0);
     absoluteExtrusion = sphereToPointer.length();
@@ -206,7 +206,7 @@ function animate() {
     // textRingC.onAnimate(delta, sphere.position, sphereToPointerAllocation, absoluteExtrusion)
     //    fontDependants?.textRing?.onAnimate(delta, absoluteExtrusion)
 
-    // stats.end()
+    stats.end()
 
     renderer.render(scene, camera);
 }
