@@ -152,14 +152,53 @@ let fontDependants: FontDependants
 
 let sphereToPointer = new THREE.Vector3()
 const worldPointerPos = new THREE.Vector3()
-window.addEventListener("mousemove", (e) => {
-    //const worldPos = windowToWorld(e, depth - sRadius / 10)
-    worldPointerPos.copy(windowToWorld(e, depth - sRadius / 6))
-    // sphere pos to mouse pos
-    sphereToPointer.copy(worldPointerPos.sub(sphere.position))
 
+let shrinkingDownOnLeave = false
+
+window.addEventListener("mousemove", (e) => {
+    shrinkingDownOnLeave = false
+    const x = e.clientX
+    const y = e.clientY
+    if (!x || !y) return
+    worldPointerPos.copy(windowToWorld(x, y, depth - sRadius / 6))
+    sphereToPointer.copy(worldPointerPos.sub(sphere.position))
 })
 
+window.addEventListener("touchstart", (e) => {
+    shrinkingDownOnLeave = false
+    const x = e.touches?.item(0).clientX
+    const y = e.touches?.item(0).clientY
+    if (!x || !y) return
+    worldPointerPos.copy(windowToWorld(x, y, depth - sRadius / 6))
+    sphereToPointer.copy(worldPointerPos.sub(sphere.position))
+})
+
+
+window.addEventListener("touchmove", (e) => {
+    shrinkingDownOnLeave = false
+    const x = e.touches?.item(0).clientX
+    const y = e.touches?.item(0).clientY
+    if (!x || !y) return
+    worldPointerPos.copy(windowToWorld(x, y, depth - sRadius / 6))
+    sphereToPointer.copy(worldPointerPos.sub(sphere.position))
+})
+
+window.addEventListener("touchend", (e) => {
+    shrinkingDownOnLeave = true
+    sphereToPointer.copy(sphereToPointer.normalize().multiplyScalar(sRadius * pixelsToWorld))
+})
+
+window.addEventListener("touchcancel", (e) => {
+    shrinkingDownOnLeave = true
+    sphereToPointer.copy(sphereToPointer.normalize().multiplyScalar(sRadius * pixelsToWorld))
+})
+
+document.addEventListener('mouseout', (e) => {
+    if (!e.relatedTarget) {
+        shrinkingDownOnLeave = true
+        sphereToPointer.copy(sphereToPointer.normalize().multiplyScalar(sRadius * pixelsToWorld))
+    }
+});
 
 // RENDERING AND ANIMATING
 
@@ -181,10 +220,10 @@ function animate() {
     absoluteExtrusion = sphereToPointer.length();
 
     if (lastFrameSphereToPointer.distanceTo(sphereToPointer) > sRadius / 10) {
-        lerped.lerp(sphereToPointer, 0.2)
+        lerped.lerp(sphereToPointer, shrinkingDownOnLeave ? 0.02 : 0.14)
     }
 
-    extrusion = Math.max((sphereToPointer.length() - sRadius * pixelsToWorld), 0);
+    // extrusion = Math.max((sphereToPointer.length() - sRadius * pixelsToWorld), 0);
     absoluteExtrusion = lerped.length();
 
 
@@ -217,10 +256,10 @@ renderer.setAnimationLoop(animate);
 let vec = new THREE.Vector3(); // create once and reuse
 let pos = new THREE.Vector3(); // create once and reuse
 
-function windowToWorld(event: MouseEvent, depth: number = 1000) {
+function windowToWorld(x: number, y: number, depth: number = 1000) {
     vec.set(
-        (event.clientX / width) * 2 - 1,
-        - (event.clientY / height) * 2 + 1,
+        (x / width) * 2 - 1,
+        - (y / height) * 2 + 1,
         1,
     );
 
