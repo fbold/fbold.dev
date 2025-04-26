@@ -154,32 +154,42 @@ body {
     background-color: rgba(1, 1, 1, 0.4);
 }
 
-#projects .row:nth-child(2) {
+#projects project-card:nth-child(2) {
     transition: transform 400ms;
     transition-delay: 100ms;
     transform: translateY(100vh);
 }
 
-#projects.show .row:nth-child(2) {
+#projects.show project-card:nth-child(2) {
     transform: translateY(0);
 }
 
-#projects .row:nth-child(3) {
+#projects project-card:nth-child(3) {
     transition: transform 400ms;
     transition-delay: 200ms;
     transform: translateY(100vh);
 }
 
-#projects.show .row:nth-child(3) {
+#projects.show project-card:nth-child(3) {
     transform: translateY(0);
 }
 
-#projects .row:nth-child(4) {
+#projects project-card:nth-child(4) {
     transition: transform 400ms;
     transition-delay: 300ms;
     transform: translateY(100vh);
 }
 
-#projects.show .row:nth-child(4) {
+#projects.show project-card:nth-child(4) {
+    transform: translateY(0);
+}
+
+#projects project-card:nth-child(5) {
+    transition: transform 400ms;
+    transition-delay: 400ms;
+    transform: translateY(100vh);
+}
+
+#projects.show project-card:nth-child(5) {
     transform: translateY(0);
 }

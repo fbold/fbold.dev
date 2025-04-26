@@ -1,12 +1,9 @@
 import * as THREE from 'three';
 import * as globularShader from "./shaders/orbular.glsl.js"
-import { Font, FontLoader } from 'three/examples/jsm/Addons.js';
-import { createTextRing } from './js/text-ring.ts';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import { setupNavigation } from "./js/navigation.ts"
-import { loadWebComponents } from "./web-components/tech-pills.ts"
-import { createOrbitalText } from './js/orbital-text.ts';
+import { loadWebComponents } from "./web-components"
 import { FontDependants, loadFontDependants } from './js/font-dependants.ts';
 
 setupNavigation()

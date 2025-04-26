@@ -20,15 +20,13 @@
         </div>
     </template>
 
-    <template id="project-template">
-        <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md">
-            <a class="text-3xl md:text-4xl hover:text-red-800 transition-colors" target="_blank"
+    <template id="project-card-template">
+        <div class="row -- w-full min-h-44 p-3 flex flex-col backdrop-blur-md opacity-95">
+            <a class="flex text-3xl md:text-4xl hover:text-red-700 transition-colors" target="_blank"
                 href="https://gatherbun.com/">Gatherbun ↗</a>
-            <slot name="tech-pills"></slot>
-            <slot name="description" class="mt-auto self-end text-end">NextJS app that uses the Prisma ORM with a
-                PostgreSQL database, all
-                containerized with docker and hosted on VPS with CI/CD using GH Actions and using Stripe as a
-                payment processor.</slot>
+            <tech-pills class="tech-pills" words="null"></tech-pills>
+            <div class="description -- mt-auto self-end text-end">
+            </div>
         </div>
     </template>
 
@@ -83,41 +81,26 @@
         </div>
         <div id="projects"
             class="md:w-1/2 w-[calc(100%-3rem)] max-w-4xl pb-20 fixed top-24 right-6 flex flex-col gap-3">
-            <div
-                class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md border-2 border-dashed border-stone-700 opacity-90">
-                <a class="flex text-3xl md:text-4xl hover:text-red-700 transition-colors" target="_blank"
-                    href="https://github.com/fbold/board">islands.futile.me ↗ <span
-                        class="ml-auto text-2xl">[WIP]</span></a>
-                <tech-pills words="Golang, HTMX"></tech-pills>
-                <p class="mt-auto self-end text-end">A public collective garden. You will be able to
-                    claim "islands" and attach a message to them, then other users can plant flowers on your island to
-                    increase its lifespan. Islands all eventually fall back into the ocean, leaving room for new ones to
-                    appear.</p>
-            </div>
-            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md opacity-90">
-                <a class="text-3xl md:text-4xl hover:text-red-700 transition-colors" target="_blank"
-                    href="https://gatherbun.com/">Gatherbun ↗</a>
-                <tech-pills words="NextJS, Postgres, Stripe, Prisma"></tech-pills>
-                <p class="mt-auto self-end text-end">NextJS app that uses the Prisma ORM with a PostgreSQL database, all
-                    containerized with docker and hosted on VPS with CI/CD using GH Actions and using Stripe as a
-                    payment processor.</p>
-            </div>
-            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md opacity-90">
-                <a class="text-3xl md:text-4xl hover:text-red-700 transition-colors" target="_blank"
-                    href="https://futile.me/">futile.me ↗</a>
-                <tech-pills words="NextJS, iron-session, TS"></tech-pills>
-                <p class="mt-auto self-end text-end">futile.me is a minimal writing platform built with the TipTap
-                    editor, custom CSS, and classic username + password auth via iron-session. It skips email in favor
-                    of a 12-word mnemonic recovery system for security and ease of use.</p>
-            </div>
-            <div class="row w-full min-h-44 p-3 flex flex-col backdrop-blur-md opacity-90">
-                <a class="text-3xl md:text-4xl hover:text-red-700 transition-colors" target="_blank"
-                    href="https://github.com/fbold/crypto-hoards/">Crypto Hoards ↗</a>
-                <tech-pills words="React, Sol JSON RPC"></tech-pills>
-                <p class="mt-auto self-end text-end">Crypto Hoards was a Solana Web3-connected web app that connected to
-                    your solana wallet and displayed your media NFTs. The code is available on my GitHub as it is now
-                    offline, was a project to dip my toes into web3.</p>
-            </div>
+            <project-card title="Islands" link="https://github.com/fbold/board" tech-words="Golang, HTMX" wip>
+                A public collective garden. You will be able to claim "islands" and attach a message to them, then other
+                users can plant flowers on your island to increase its lifespan. Islands all eventually fall back into
+                the ocean, leaving room for new ones to appear.
+            </project-card>
+            <project-card title="Gatherbun" link="https://gatherbun.com/" tech-words="NextJS, Postgres, Stripe, Prisma">
+                NextJS app that uses the Prisma ORM with a PostgreSQL database, all containerized with docker and hosted
+                on VPS with CI/CD using GH Actions and using Stripe as a payment processor.
+            </project-card>
+            <project-card title="futile.me" link="https://futile.me" tech-words="NextJS, iron-session, TS">
+                futile.me is a minimal writing platform built with the TipTap editor, custom CSS, and classic username +
+                password auth via iron-session. It skips email in favor of a 12-word mnemonic recovery system for
+                security and ease of use.
+            </project-card>
+            <project-card title="crypto hoards" link="https://github.com/fbold/crypto-hoards/"
+                tech-words="React, Sol JSON RPC">
+                Crypto Hoards was a Solana Web3-connected web app that connected to your solana wallet and displayed
+                your media NFTs. The code is available on my GitHub as it is now offline, was a project to dip my toes
+                into web3.
+            </project-card>
         </div>
         <h2 id="site-title"
             class="font-[Absans] fixed text-4xl md:p-4 transition-[filter] hover:blur-xs duration-500 cursor-cell -top-8 md:top-0 left-0 origin-bottom-left rotate-90 md:rotate-0">

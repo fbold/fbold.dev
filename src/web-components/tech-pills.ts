@@ -1,4 +1,4 @@
-class TechPills extends HTMLElement {
+export class TechPills extends HTMLElement {
 
     connectedCallback() {
         const words = (this.getAttribute('words') || '')
@@ -29,6 +29,5 @@ class TechPills extends HTMLElement {
     }
 }
 
-export const loadWebComponents = () => window.customElements.define('tech-pills', TechPills)
 
 
