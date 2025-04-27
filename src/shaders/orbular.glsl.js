@@ -1,10 +1,11 @@
 export const vertex = /* glsl */ `
 
+varying vec3 vWorldPosition;
 varying vec3 vNormal;
 attribute float displacement;
 uniform vec3 pointer_direction;
 uniform float extrusion;
-uniform float amplitude;
+uniform float time;
 uniform float radius;
 uniform float scale;
 
@@ -12,10 +13,12 @@ uniform float scale;
 
 void main() {
     vNormal = normal;
+    vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+    vWorldPosition = worldPosition.xyz;
 
     float dotVal = dot(normalize(vNormal), normalize(pointer_direction));
     float asinDotVal = asin(dotVal);
-    // then we make amplitude of sin function bigger
+    // then we make time of sin function bigger
     // constant multiplier is to compensate for 0.8 limiting
     // domain and therfore recorregut of sin, ie make it normalized again
     float sinDotVal = 1.051462224 * sin(asinDotVal * 0.8);
@@ -24,8 +27,8 @@ void main() {
     float wobbleLevel = pow(max(sinDotVal, 0.0), 4.0);
 
     // now range of level is -1 to 1
-    float wobble = 6.0 * sin(10.0 * displacement * radius + amplitude);
-    float slowWobble = 5.0 * sin(2.0 * displacement * radius + amplitude * 0.3);
+    float wobble = 6.0 * sin(10.0 * displacement * radius + time);
+    float slowWobble = 5.0 * sin(2.0 * displacement * radius + time * 0.3);
 
     // need to divide by scale because it is in non-adjusted world dimensions
     // NOTE it is limited to radius, ie range of extrusion_ is 0 to radius
@@ -41,7 +44,15 @@ void main() {
 
 export const fragment = /* glsl */ `
 // same name and type as VS
+uniform vec3 rippleCenter;
+uniform float rippleStartTime;
+uniform float time;
 varying vec3 vNormal;
+varying vec3 vWorldPosition;
+
+vec3 baseColor = vec3(1.0, 1.0, 1.0);
+vec3 rippleColor = vec3(1.0, 0.1, 0.1);
+
 void main() {
     // calc the dot product and clamp
     // 0 -> 1 rather than -1 -> 1
@@ -54,6 +65,23 @@ void main() {
     // the light to the vertex normal
     float dProd = max(0.0, dot(vNormal, light));
 
+    // float dist = distance(vWorldPosition, rippleCenter);
+    // float ripple = sin(dist * 0.1 - time * 3.0);
+    // ripple = 0.5 + 0.5 * ripple;
+
+    float elapsed = time - rippleStartTime;
+    if (elapsed < 0.0) discard; // Not started yet
+
+    float dist = distance(vWorldPosition, rippleCenter);
+    float rippleRadius = elapsed * 70.0; // how fast the ripple expands
+    float rippleThickness = 45.0; // how thick the ripple ring is
+
+    float edge = smoothstep(rippleRadius - rippleThickness, rippleRadius, dist) *
+            (1.0 - smoothstep(rippleRadius, rippleRadius + rippleThickness, dist));
+
+    vec3 color = mix(baseColor, rippleColor, edge);
+    gl_FragColor = vec4(dProd * color, 1.0);
+
     //   float max = 0.8;
     //   float min = 0.5;
     //
@@ -62,9 +90,9 @@ void main() {
     //   vec3 coloured = dProd * vec3(redness, min - min * otherness, min - min * otherness);
 
     // feed into our frag colour
-    gl_FragColor = vec4(dProd, // R
-            dProd, // G
-            dProd, // B
-            1.0); // A
+    // gl_FragColor = vec4(dProd, // R
+    //         dProd, // G
+    //         dProd, // B
+    //         1.0); // A
 }
 `

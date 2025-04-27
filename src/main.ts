@@ -82,7 +82,7 @@ const material = new THREE.ShaderMaterial({
         extrusion: {
             value: THREE.FloatType
         },
-        amplitude: {
+        time: {
             value: THREE.FloatType
         },
         radius: {
@@ -91,6 +91,12 @@ const material = new THREE.ShaderMaterial({
         scale: {
             value: THREE.FloatType
         },
+        rippleCenter: {
+            value: new THREE.Vector3()
+        },
+        rippleStartTime: {
+            value: -1.0//THREE.FloatType
+        }
     },
     vertexShader: vShaderSphere,
     fragmentShader: fShaderSphere
@@ -210,6 +216,12 @@ function checkSphereClick(x: number, y: number) {
 
     if (intersects.length > 0) {
         console.log('Sphere clicked!', intersects[0]);
+        const point = intersects[0].point;
+        sphere.material.uniforms.rippleCenter.value.copy(point);
+        sphere.material.uniforms.rippleStartTime.value = sphere.material.uniforms.time.value
+    } else {
+        sphere.material.uniforms.rippleCenter.value.copy(sphere.position.clone().add(worldPointerPos.clone().normalize().multiplyScalar(sRadius * pixelsToWorld)));
+        sphere.material.uniforms.rippleStartTime.value = sphere.material.uniforms.time.value
     }
 }
 
@@ -251,7 +263,7 @@ function animate() {
     frame += 1 * delta
     material.uniforms.pointer_direction.value = lerped;
     material.uniforms.extrusion.value = absoluteExtrusion
-    material.uniforms.amplitude.value += delta * 10 //* 5 * Math.min(0.6 + extrusion, 1);
+    material.uniforms.time.value += delta * 10 //* 5 * Math.min(0.6 + extrusion, 1);
 
     // we want the rings to extend with extrusion, interpolate between 0 and max
     // as a function of extrusion
