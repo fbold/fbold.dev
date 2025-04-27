@@ -15,12 +15,21 @@ export class ProjectCard extends HTMLElement {
             console.log(wipText)
         }
 
+        console.log(this.getAttribute("link"))
+        if (this.getAttribute("link") !== "") {
+            clone.querySelector("a").href = this.getAttribute("link")
+            clone.querySelector("a").textContent = this.getAttribute("title") + "↗"
+        } else {
+            const replacement = document.createElement("h3")
+            replacement.className = clone.querySelector(".title").className
+            replacement.classList.remove("hover:text-red-700", "transition-colors")
+            clone.querySelector(".title").replaceWith(replacement)
+            clone.querySelector(".title").textContent = this.getAttribute("title")
+        }
 
-        clone.querySelector("a").href = this.getAttribute("link")
-        clone.querySelector("a").textContent = this.getAttribute("title") + "↗"
-        if (wipText) clone.querySelector("a").appendChild(wipText)
+        if (wipText) clone.querySelector(".title").appendChild(wipText)
 
-        clone.querySelector(".description").textContent = this.textContent
+        clone.querySelector(".description").innerHTML = this.innerHTML
         this.textContent = ""
 
         console.log(clone.querySelector("tech-pills"))

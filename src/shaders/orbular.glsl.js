@@ -47,11 +47,12 @@ export const fragment = /* glsl */ `
 uniform vec3 rippleCenter;
 uniform float rippleStartTime;
 uniform float time;
+uniform float radius;
 varying vec3 vNormal;
 varying vec3 vWorldPosition;
 
 vec3 baseColor = vec3(1.0, 1.0, 1.0);
-vec3 rippleColor = vec3(1.0, 0.1, 0.1);
+vec3 rippleColor = vec3(1.0, 0.0, 0.0);
 
 void main() {
     // calc the dot product and clamp
@@ -74,7 +75,7 @@ void main() {
 
     float dist = distance(vWorldPosition, rippleCenter);
     float rippleRadius = elapsed * 70.0; // how fast the ripple expands
-    float rippleThickness = 45.0; // how thick the ripple ring is
+    float rippleThickness = 100.0; // how thick the ripple ring is
 
     float edge = smoothstep(rippleRadius - rippleThickness, rippleRadius, dist) *
             (1.0 - smoothstep(rippleRadius, rippleRadius + rippleThickness, dist));

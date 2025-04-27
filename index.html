@@ -22,8 +22,10 @@
 
     <template id="project-card-template">
         <div class="row -- w-full min-h-44 p-3 flex flex-col backdrop-blur-md opacity-95">
-            <a class="flex text-3xl md:text-4xl hover:text-red-700 transition-colors" target="_blank"
-                href="https://gatherbun.com/">Gatherbun ↗</a>
+            <a class="title -- flex text-3xl md:text-4xl hover:text-red-700 transition-colors" target="_blank"
+                href="https://gatherbun.com/">
+                Gatherbun ↗
+            </a>
             <tech-pills class="tech-pills" words="null"></tech-pills>
             <div class="description -- mt-auto self-end text-end">
             </div>
@@ -49,16 +51,10 @@
                 <a class="hover:text-red-700 transition-colors" target="_blank"
                     href="https://github.com/fbold">github</a>
             </div>
-            <!-- <div class="flex"> -->
-            <!--     <a class="hover:text-red-700 transition-colors text-xl ml-auto mt-2" target="_blank" -->
-            <!--         href="https://github.com/fbold">what is this typeface?</a> -->
-            <!-- </div> -->
-            <!-- <div class=""> -->
-            <!--     <a class="hover:text-red-700 transition-colors" target="_blank" href="https://github.com/fbold">gh</a> / -->
-            <!--     <a class="hover:text-red-700 transition-colors" target="_blank" -->
-            <!--         href="https://linkedin.com/in/fbold">in</a> -->
-            <!-- </div> -->
         </div>
+        <!-- <div class="bottom-0 left-0 fixed pointer-events-none m-6 mb-12  text-black max-w-5/12"> -->
+        <!--     <p>Hi there, I'm Fred, I use Linux, Neovim. Mostly do web stuff. Learn fast.</p> -->
+        <!-- </div> -->
         <div id="contact"
             class="md:w-1/2 w-[calc(100%-3rem)] max-w-4xl h-[calc(100%-var(--spacing)*24)] overflow-y-auto fixed pb-12 top-24 right-6 flex flex-col gap-3">
             <div class="text-xl w-full flex flex-col gap-2 backdrop-blur-md opacity-90 p-3">
@@ -92,14 +88,21 @@
             </project-card>
             <project-card title="futile.me" link="https://futile.me" tech-words="NextJS, iron-session, TS">
                 futile.me is a minimal writing platform built with the TipTap editor, custom CSS, and classic username +
-                password auth via iron-session. It skips email in favor of a 12-word mnemonic recovery system for
+                password auth using <a href="https://github.com/vvo/iron-session" class="underline" title=""
+                    target="_blank">iron-session</a>. It
+                skips email in
+                favor of a 12-word mnemonic recovery system for
                 security and ease of use.
             </project-card>
-            <project-card title="crypto hoards" link="https://github.com/fbold/crypto-hoards/"
+            <project-card title="Crypto Hoards" link="https://github.com/fbold/crypto-hoards/"
                 tech-words="React, Sol JSON RPC">
                 Crypto Hoards was a Solana Web3-connected web app that connected to your solana wallet and displayed
                 your media NFTs. The code is available on my GitHub as it is now offline, was a project to dip my toes
                 into web3.
+            </project-card>
+            <project-card title="Unity Engine Work" link="" tech-words="Unity, C#">
+                Before getting in to web development I spent a lot of time in the Unity game engine. I developer a
+                gravitational interations visualizer and spent over a year working on a game (which never go finished)
             </project-card>
         </div>
         <h2 id="site-title"
@@ -108,8 +111,9 @@
         <div id="typeface-link" class="fixed bottom-4 right-4 text-white text-left">
             <!-- <h2 class="font-[Absans] italic text-4xl place-self-end mt-auto">fbold.dev</h2> -->
             <a class="text-lg hover:cursor-pointer hover:underline" href="https://www.collletttivo.it/typefaces/absans"
-                target="_blank">what is this beautiful
-                typeface?</a>
+                target="_blank">
+                what typeface?
+            </a>
         </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

@@ -32,7 +32,7 @@ const stats = new Stats()
 // 2 => MB MBytes of allocated memory. (Run Chrome with --enable-precise-memory-info)
 // 3 => CUSTOM User-defined panel support.
 stats.showPanel(0)
-document.body.appendChild(stats.dom)
+//document.body.appendChild(stats.dom)
 
 camera.position.z = 1000
 renderer.setSize(window.innerWidth, window.innerHeight);
