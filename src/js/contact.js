@@ -12,7 +12,7 @@ form.addEventListener("submit", async function(e) {
 	try {
 
 		button.classList.add("pulse")
-		const response = await fetch("http://localhost:3003/contact", {
+		const response = await fetch("https://fbold.dev/contact", {
 			method: "POST",
 			body: formData
 		});
