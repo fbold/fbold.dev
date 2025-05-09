@@ -59,14 +59,20 @@
             class="md:w-1/2 w-[calc(100%-3rem)] max-w-4xl h-[calc(100%-var(--spacing)*24)] overflow-y-auto fixed pb-12 top-24 right-6 flex flex-col gap-3">
             <div class="text-xl w-full flex flex-col gap-2 backdrop-blur-md opacity-90 p-3">
                 <p class="text-xl">Contact me directly using this form</p>
-                <form class="flex flex-col gap-2">
+                <form id="contact-form" class="flex flex-col gap-2">
                     <span class="flex flex-row w-full">
-                        <input class="border border-white p-2 w-full" type="email" placeholder="your@email.pls" />
-                        <button type="submit" class="px-4 cursor-pointer bg-white text-black">SEND</button>
+                        <input tabindex="1" class="border border-white p-2 w-full" name="email" type="email" required
+                            placeholder="your@email.pls" />
+                        <button tabindex="3" id="submit-button" type="submit"
+                            class="px-4 cursor-pointer bg-white text-black transition-colors duration-200 bg-green-500">SEND</button>
                     </span>
-                    <textarea placeholder="In English, Catalan, or Spanish"
+                    <textarea tabindex="2" name="message" required placeholder="How can I help?"
                         class="text-md p-2 min-h-40 border border-white"></textarea>
+                    <p id="error-text" class="pointer-events-none text-red-600 bg-white text-md p-0.5 px-2" hidden>
+                        It seems there was an error. Try sending me an email instead.
+                    </p>
                 </form>
+                <script type="module" src="/src/js/contact.js"></script>
                 <p>Or just shoot me an email (click to copy - not a mailto link): <br />
                     <span class="cursor-pointer"
                         onclick="navigator.clipboard.writeText('fbold.dev@gmail.com').then(() => {this.innerHTML = '<x class=\'underline\'>fbold.dev@gmail.com</x> copied!'; setTimeout(()=>{this.innerHTML = '<x class=\'underline\'>fbold.dev@gmail.com</x>';}, 2000)}).catch(() => this.innerHTML = '<x class=\'underline\'>fbold.dev@gmail.com</x> oops (couldn\'t copy)!')">
