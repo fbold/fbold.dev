@@ -15,22 +15,22 @@ const links = [
     <meta name="generator" content={Astro.generator} />
     <title>Astro</title>
   </head>
-  <body class="bg-bg text-text font-main">
+  <body class="bg-bg text-text font-main text-lg">
     <div
       class="h-full w-full max-w-lg mx-auto flex flex-col items-center justify-center"
     >
       <div class="text-center mb-5 px-20">
-        Hi, I'm Fred. This is the landing page. Here are relevant links.
+        Hi, I'm Fred.<br />This is the landing page, these are relevant links:
       </div>
       <div class="flex flex-col gap-2 text-center items-center justify-center">
         {
           links.map((link) => (
             <a
-              class="group cursor-pointer w-min underline md:no-underline"
+              class="relative group cursor-pointer w-min transition-colors hover:text-white underline md:no-underline"
               href={link.href}
             >
               {link.name}
-              <span class="h-[1px] bg-text w-full relative block transition-[scale,opacity] duration-150 scale-x-0 group-hover:scale-x-100 opacity-0 group-hover:opacity-100 origin-center" />
+              <span class="h-[1px] bg-white w-full absolute block transition-[scale,opacity] duration-150 scale-x-0 group-hover:scale-x-100 opacity-0 group-hover:opacity-100 origin-center" />
             </a>
           ))
         }
