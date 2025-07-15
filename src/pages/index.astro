@@ -1,16 +1,40 @@
 ---
+import "../styles/global.css"
 
+const links = [
+  { name: "portfolio", href: "portfolio.fbold.dev" },
+  { name: "blog", href: "blog.fbold.dev" },
+]
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body class="bg-bg text-text font-main">
+    <div
+      class="h-full w-full max-w-lg mx-auto flex flex-col items-center justify-center"
+    >
+      <div class="text-center mb-5 px-20">
+        Hi, I'm Fred. This is the landing page. Here are relevant links.
+      </div>
+      <div class="flex flex-col gap-2 text-center items-center justify-center">
+        {
+          links.map((link) => (
+            <a
+              class="group cursor-pointer w-min underline md:no-underline"
+              href={link.href}
+            >
+              {link.name}
+              <span class="h-[1px] bg-text w-full relative block transition-[scale,opacity] duration-150 scale-x-0 group-hover:scale-x-100 opacity-0 group-hover:opacity-100 origin-center" />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </body>
 </html>

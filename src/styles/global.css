@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/* FONTS */
+@font-face {
+	font-family: 'NectoMono';
+	src: url('/fonts/NectoMono-Regular.woff2') format('woff2'), url('/fonts/NectoMono-Regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+	height: 100dvh;
+}
+
+@theme {
+	--color-bg: #080D08;
+	--color-text: #8FB996;
+
+	--font-main: "NectoMono", monospace;
+}
