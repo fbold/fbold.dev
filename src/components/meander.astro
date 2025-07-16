@@ -2,12 +2,12 @@
 
 ---
 
-<canvas id="animated-canvas" class="fixed inset-0 z-0"></canvas>
+<canvas id="animated-canvas" class="fixed inset-0 z-0 opacity-50"></canvas>
 
 <script is:inline>
-  const LINE_DENSITY = 0.005
-  const LINE_SPEED = 2
-  const LINE_SEGMENT = 12
+  const LINE_DENSITY = 0.05
+  const LINE_SPEED = 100
+  const LINE_SEGMENT = 10
   const LINE_SEGMENT_COUNT = 100
 
   window.addEventListener("load", () => {
@@ -62,64 +62,73 @@
         x: x,
         y: y,
       }
+
       this.x = x
       this.y = y
-      this.length = 0
-      this.end = false
-
-      this.direction = directionIntent
+      this.segmentProgress = 0
       this.vertices = []
+      this.direction = directionIntent
+      this.end = false
 
       this.newSegment = () => {
         this.vertices.push([this.x, this.y])
 
         if (this.direction[1] === 0) {
-          this.direction[1] = Math.random() > 0.5 ? 1 : -1
-          this.direction[0] = 0
-        } else if (this.direction[0] === 0) {
-          this.direction[0] = Math.random() > 0.5 ? 1 : -1
-          this.direction[1] = 0
+          this.direction = [0, Math.random() > 0.5 ? 1 : -1]
+        } else {
+          this.direction = [Math.random() > 0.5 ? 1 : -1, 0]
         }
       }
 
-      this.draw = () => {
-        if (!this.end) {
-          this.length = this.length + LINE_SPEED
-        }
-        let currentLength =
-          this.length - LINE_SEGMENT * Math.floor(this.length / LINE_SEGMENT)
+      this.draw = (delta) => {
+        if (!this.end && !isNaN(delta))
+          this.segmentProgress += LINE_SPEED * delta
 
-        if (this.length > LINE_SEGMENT * this.vertices.length) {
+        // complete one or more full segments
+        while (this.segmentProgress >= LINE_SEGMENT) {
+          this.x += this.direction[0] * LINE_SEGMENT
+          this.y += this.direction[1] * LINE_SEGMENT
           this.newSegment()
+          this.segmentProgress -= LINE_SEGMENT
         }
 
+        // draw the path
         ctx.beginPath()
         ctx.lineWidth = 2
         ctx.strokeStyle = "#A1CCA5"
         ctx.moveTo(origin.x, origin.y)
 
-        this.vertices.forEach((v) => {
-          ctx.lineTo(v[0], v[1])
+        this.vertices.forEach(([vx, vy]) => {
+          ctx.lineTo(vx, vy)
         })
-        this.x += currentLength * this.direction[0]
-        this.y += currentLength * this.direction[1]
 
-        ctx.lineTo(this.x, this.y)
+        // draw current in-progress segment
+        const px = this.x + this.direction[0] * this.segmentProgress
+        const py = this.y + this.direction[1] * this.segmentProgress
+        ctx.lineTo(px, py)
         ctx.stroke()
 
-        if (this.vertices.length > LINE_SEGMENT_COUNT) this.end = true
+        if (this.vertices.length >= LINE_SEGMENT_COUNT) {
+          this.end = true
+        }
       }
     }
 
     let allEnded = false
-    const animate = () => {
+    let lastTime = 0
+    let deltaTime = 0
+
+    function animate(time) {
+      deltaTime = (time - lastTime) / 1000 // in seconds
+      lastTime = time
+
       if (!allEnded) {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
 
         allEnded = true
         lines.forEach((line) => {
           allEnded = allEnded && line.end
-          line.draw()
+          line.draw(deltaTime)
         })
         console.log("animating")
         requestAnimationFrame(animate)
