@@ -1,0 +1,131 @@
+---
+
+---
+
+<canvas id="animated-canvas" class="fixed inset-0 z-0"></canvas>
+
+<script is:inline>
+  const LINE_DENSITY = 0.005
+  const LINE_SPEED = 2
+  const LINE_SEGMENT = 12
+  const LINE_SEGMENT_COUNT = 100
+
+  window.addEventListener("load", () => {
+    const canvas = document.getElementById("animated-canvas")
+    const ctx = canvas.getContext("2d")
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+
+    resizeCanvas()
+    window.addEventListener("resize", resizeCanvas)
+
+    const lines = []
+
+    const lateralLines = Math.floor(canvas.height * 2 * LINE_DENSITY)
+    const verticalLines = Math.floor(canvas.width * 2 * LINE_DENSITY)
+
+    console.log("LATERAL", lateralLines, "VERTICAL", verticalLines)
+
+    for (let i = 0; i < lateralLines; i++) {
+      if (i < lateralLines / 2) {
+        const x = 0
+        const y = (i / lateralLines) * 2 * canvas.height
+        const direction = [1, 0]
+        lines.push(new Line(x, y, direction))
+      } else {
+        const x = canvas.width
+        const y = ((i - lateralLines / 2) / lateralLines) * 2 * canvas.height
+        const direction = [-1, 0]
+        lines.push(new Line(x, y, direction))
+      }
+    }
+
+    for (let i = 0; i < verticalLines; i++) {
+      if (i < verticalLines / 2) {
+        const x = (i / verticalLines) * 2 * canvas.width
+        const y = 0
+        const direction = [0, 1]
+        lines.push(new Line(x, y, direction))
+      } else {
+        const x = ((i - verticalLines / 2) / verticalLines) * 2 * canvas.width
+        const y = canvas.height
+        const direction = [0, -1]
+        lines.push(new Line(x, y, direction))
+      }
+    }
+
+    function Line(x, y, directionIntent) {
+      const origin = {
+        x: x,
+        y: y,
+      }
+      this.x = x
+      this.y = y
+      this.length = 0
+      this.end = false
+
+      this.direction = directionIntent
+      this.vertices = []
+
+      this.newSegment = () => {
+        this.vertices.push([this.x, this.y])
+
+        if (this.direction[1] === 0) {
+          this.direction[1] = Math.random() > 0.5 ? 1 : -1
+          this.direction[0] = 0
+        } else if (this.direction[0] === 0) {
+          this.direction[0] = Math.random() > 0.5 ? 1 : -1
+          this.direction[1] = 0
+        }
+      }
+
+      this.draw = () => {
+        if (!this.end) {
+          this.length = this.length + LINE_SPEED
+        }
+        let currentLength =
+          this.length - LINE_SEGMENT * Math.floor(this.length / LINE_SEGMENT)
+
+        if (this.length > LINE_SEGMENT * this.vertices.length) {
+          this.newSegment()
+        }
+
+        ctx.beginPath()
+        ctx.lineWidth = 2
+        ctx.strokeStyle = "#A1CCA5"
+        ctx.moveTo(origin.x, origin.y)
+
+        this.vertices.forEach((v) => {
+          ctx.lineTo(v[0], v[1])
+        })
+        this.x += currentLength * this.direction[0]
+        this.y += currentLength * this.direction[1]
+
+        ctx.lineTo(this.x, this.y)
+        ctx.stroke()
+
+        if (this.vertices.length > LINE_SEGMENT_COUNT) this.end = true
+      }
+    }
+
+    let allEnded = false
+    const animate = () => {
+      if (!allEnded) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        allEnded = true
+        lines.forEach((line) => {
+          allEnded = allEnded && line.end
+          line.draw()
+        })
+        console.log("animating")
+        requestAnimationFrame(animate)
+      }
+    }
+
+    animate()
+  })
+</script>
