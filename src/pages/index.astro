@@ -3,9 +3,9 @@ import "../styles/global.css"
 import Meander from "../components/meander.astro"
 
 const links = [
-  { name: "portfolio", href: "portfolio.fbold.dev" },
-  { name: "blog", href: "blog.fbold.dev" },
-  { name: "tao", href: "tao.fbold.dev" },
+  { name: "portfolio", href: "https://portfolio.fbold.dev/" },
+  { name: "blog", href: "https://blog.fbold.dev" },
+  { name: "tao", href: "https://tao.fbold.dev" },
 ]
 ---
 
@@ -39,11 +39,11 @@ const links = [
           {
             links.map((link) => (
               <a
-                class="relative group cursor-pointer w-min transition-colors hover:text-white underline md:no-underline"
+                class="relative group cursor-pointer w-min transition-colors hover:text-white no-underline"
                 href={link.href}
               >
                 {link.name}
-                <span class="h-[1px] bg-white w-full absolute block transition-[scale,opacity] duration-150 scale-x-0 group-hover:scale-x-100 opacity-0 group-hover:opacity-100 origin-center" />
+                <span class="h-[2px] bg-white w-full absolute top-[15px] block transition-[scale,opacity] duration-300 scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 origin-center" />
               </a>
             ))
           }
