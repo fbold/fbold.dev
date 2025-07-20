@@ -9,6 +9,7 @@
   const LINE_SPEED = 100
   const LINE_SEGMENT = 10
   const LINE_SEGMENT_COUNT = 100
+  const LINE_SEGMENT_COUNT_VARIANCE = 10
 
   window.addEventListener("load", () => {
     const canvas = document.getElementById("animated-canvas")
@@ -69,6 +70,12 @@
       this.vertices = []
       this.direction = directionIntent
       this.end = false
+      this.segmentCount =
+        LINE_SEGMENT_COUNT +
+        Math.round(
+          Math.random() * LINE_SEGMENT_COUNT_VARIANCE -
+            LINE_SEGMENT_COUNT_VARIANCE / 2,
+        )
 
       this.newSegment = () => {
         this.vertices.push([this.x, this.y])
@@ -122,7 +129,7 @@
         ctx.lineTo(px, py)
         ctx.stroke()
 
-        if (this.vertices.length >= LINE_SEGMENT_COUNT) {
+        if (this.vertices.length >= this.segmentCount) {
           this.end = true
         }
       }
