@@ -2,7 +2,7 @@
 
 ---
 
-<canvas id="animated-canvas" class="fixed inset-0 z-0 opacity-50"></canvas>
+<canvas id="animated-canvas" class="fixed inset-0 z-0"></canvas>
 
 <script is:inline>
   const LINE_DENSITY = 0.05
@@ -96,6 +96,20 @@
         ctx.beginPath()
         ctx.lineWidth = 2
         ctx.strokeStyle = "#A1CCA5"
+        const centerX = canvas.width / 2
+        const centerY = canvas.height / 2
+        const g = ctx.createRadialGradient(
+          centerX,
+          centerY,
+          150,
+          centerX,
+          centerY,
+          canvas.width,
+        )
+        g.addColorStop(0, `rgba(${0xa1},${0xcc},${0xa4},0.2)`) // opaque
+        g.addColorStop(0.3, `rgba(${0xa1},${0xcc},${0xa4},1)`) // opaque
+        g.addColorStop(1, `rgba(${0xa1},${0xcc},${0xa4},1)`) // opaque
+        ctx.strokeStyle = g
         ctx.moveTo(origin.x, origin.y)
 
         this.vertices.forEach(([vx, vy]) => {
