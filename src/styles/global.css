@@ -25,21 +25,32 @@ body {
 }
 
 @theme {
-	--color-bg: #070a08;
+	--color-bg: #f2f8f2;
+	--color-bg-d: #070a08;
 	--color-text: #47854E;
 	--color-text-d: #47854E;
 	--font-main: "NectoMono", monospace;
+
+	--text-shadow-m: 1px 0 4px;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 
 a {
-	text-shadow: #c9c9c9 1px 0 4px;
 	transition: all ease-in-out 300ms;
 }
 
-a:hover {
+a:hover.blur--link {
+	filter: blur(3px);
+	transition: ease-in-out 300ms;
+}
+
+a .blur--link {
+	transition: all ease-in-out 300ms;
+}
+
+a:hover .blur--link {
 	filter: blur(3px);
 	transition: ease-in-out 300ms;
 }
