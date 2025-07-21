@@ -18,9 +18,30 @@ body {
 	height: 100dvh;
 }
 
+html,
+html * {
+	transition: ease-in-out 400ms;
+	transition-property: background-color, color;
+}
+
 @theme {
 	--color-bg: #070a08;
 	--color-text: #A1CCA5;
 
 	--font-main: "NectoMono", monospace;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+h1,
+a,
+button {
+	text-shadow: #c9c9c9 1px 0 4px;
+	transition: ease-in-out 300ms;
+}
+
+a:hover {
+	filter: blur(3px);
+	transition: ease-in-out 300ms;
 }

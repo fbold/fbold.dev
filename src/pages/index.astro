@@ -17,38 +17,55 @@ const links = [
     <meta name="generator" content={Astro.generator} />
     <title>Astro</title>
   </head>
-  <body class="bg-bg text-text font-main text-md">
+  <body class="dark:bg-bg text-text font-main text-md">
     <Meander />
     <div
       class="h-full w-full max-w-lg mx-auto flex flex-col items-center justify-center"
     >
-      <div class="relative mx-20">
-        <!-- <div -->
-        <!--   class="w-[calc(100%+40px)] h-[calc(100%+20px)] -translate-x-5 border border-text block p-4 top-3" -->
-        <!-- > -->
-        <!-- </div> -->
+      <div class="relative mx-20 flex flex-col gap-2">
         <div
-          class="text-center bg-bg absolute p-1 px-2 left-1/2 -translate-x-1/2 text-nowrap -translate-y-1/2"
+          class="text-center bg-white dark:bg-bg absolute p-1 px-2 left-1/2 -translate-x-1/2 text-nowrap -translate-y-1/2"
         >
           <h1 class="">Hi, I'm Fred</h1>
           <!-- This is the landing page, these are relevant links: -->
         </div>
         <div
-          class="flex flex-col text-white gap-2 bg-bg text-center text-xl items-center justify-center border border-text p-6 px-10"
+          class="flex flex-col text-white gap-2 bg-white dark:bg-bg text-center text-xl items-center justify-center border border-text p-6 px-10"
         >
           {
             links.map((link) => (
               <a
-                class="relative group cursor-pointer w-min transition-colors hover:text-white no-underline"
+                class="relative group cursor-pointer w-min text-bg dark:text-white no-underline"
                 href={link.href}
               >
                 {link.name}
-                <span class="h-[2px] bg-white w-full absolute top-[15px] block transition-[scale,opacity] duration-300 scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 origin-center" />
+                <span class="h-[2px] bg-bg dark:bg-white w-full absolute top-[15px] block transition-[scale,opacity] duration-300 scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 origin-center" />
               </a>
             ))
           }
         </div>
+        <button
+          type="button"
+          class="dark:hidden text-lg cursor-pointer ml-auto border border-text aspect-square h-8"
+          onclick="toggledarkmode()">☾</button
+        >
+        <button
+          type="button"
+          onclick="togglelightmode()"
+          class="hidden dark:block text-lg cursor-pointer ml-auto border border-text aspect-square h-8"
+          >☼</button
+        >
       </div>
     </div>
   </body>
 </html>
+
+<script is:inline>
+  function toggledarkmode() {
+    console.log("dark")
+    document.querySelector("html")?.classList.add("dark")
+  }
+  function togglelightmode() {
+    document.querySelector("html")?.classList.remove("dark")
+  }
+</script>
