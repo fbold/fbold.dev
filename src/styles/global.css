@@ -18,27 +18,25 @@ body {
 	height: 100dvh;
 }
 
-html,
-html * {
+/* dark mode animate */
+.dm--animate {
 	transition: ease-in-out 400ms;
 	transition-property: background-color, color;
 }
 
 @theme {
 	--color-bg: #070a08;
-	--color-text: #A1CCA5;
-
+	--color-text: #47854E;
+	--color-text-d: #47854E;
 	--font-main: "NectoMono", monospace;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 
-h1,
-a,
-button {
+a {
 	text-shadow: #c9c9c9 1px 0 4px;
-	transition: ease-in-out 300ms;
+	transition: all ease-in-out 300ms;
 }
 
 a:hover {
