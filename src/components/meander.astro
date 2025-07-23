@@ -2,10 +2,7 @@
 
 ---
 
-<canvas
-  id="animated-canvas"
-  class="fixed inset-0 z-0 invert-0 dark:invert-100 transition-[filter]"
-></canvas>
+<canvas id="animated-canvas" class="fixed inset-0 z-0"></canvas>
 
 <script is:inline>
   const LINE_DENSITY = 0.05
@@ -105,7 +102,7 @@
         // draw the path
         ctx.beginPath()
         ctx.lineWidth = 2
-        ctx.strokeStyle = "#070a08"
+        ctx.strokeStyle = "#4A5D46"
         const centerX = canvas.width / 2
         const centerY = canvas.height / 2
         // const g = ctx.createRadialGradient(

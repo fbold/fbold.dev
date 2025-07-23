@@ -25,10 +25,12 @@ body {
 }
 
 @theme {
-	--color-bg: #f2f8f2;
-	--color-bg-d: #070a08;
-	--color-text: #47854E;
-	--color-text-d: #47854E;
+	--color-primary: #412722;
+	--color-primary: #4A5D46;
+	--color-secondary: #312320;
+	--color-surface: #F4D4B8;
+	--color-accent: #CC5500;
+
 	--font-main: "NectoMono", monospace;
 
 	--text-shadow-m: 1px 0 4px;
