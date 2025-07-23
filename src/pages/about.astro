@@ -1,0 +1,41 @@
+---
+import Layout from "../layouts/main.astro"
+import Link from "@/components/ui/link.astro"
+---
+
+<Layout>
+  <div class="w-full max-w-lg m-auto flex items-center justify-center">
+    <div class="flex flex-col gap-2 m-10 md:mx-0 text-sm md:text-base">
+      <Link href="/">← take me home</Link>
+      <h1 class="font-bold mt-3">
+        I'm Fred and, among other things, I'm a developer,
+      </h1>
+      <p>I enjoy making interesting websites.</p>
+      <p>
+        I love typography as an appreciator; one day I will make my own
+        typeface.
+      </p>
+      <p>
+        I like sewing and taking photos; one day I will publish my photos on a
+        nice little website.
+      </p>
+      <p>
+        I love many movies (my <Link href="https://letterboxd.com/fbold/"
+          >letterboxd</Link
+        >); one day I will make my own movie.
+      </p>
+      <p>Everything is a work in progress.</p>
+      <p class="text-sm mt-2">
+        If you would like to work with me please get in touch via the contact
+        form on my <a
+          href="https://portfolio.fbold.dev/"
+          class="blur--link text-secondary cursor-pointer">portfolio</a
+        > or send me an email <a
+          href="mailto:fbold.dev@gmail.com"
+          class="blur--link text-secondary cursor-pointer"
+          >fbold.dev@gmail.com</a
+        >.
+      </p>
+    </div>
+  </div>
+</Layout>

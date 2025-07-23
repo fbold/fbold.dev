@@ -25,9 +25,8 @@ body {
 }
 
 @theme {
-	--color-primary: #412722;
-	--color-primary: #4A5D46;
-	--color-secondary: #312320;
+	--color-primary: #312320;
+	--color-secondary: #4A5D46;
 	--color-surface: #F4D4B8;
 	--color-accent: #CC5500;
 

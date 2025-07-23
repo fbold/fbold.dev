@@ -1,101 +1,86 @@
 ---
 import "../styles/global.css"
 import Meander from "../components/meander.astro"
-
-import gh from "../assets/github/github-mark.svg"
-import { Image } from "astro:assets"
+import Layout from "../layouts/main.astro"
 
 const links = [
+  { name: "about", href: "/about" },
   { name: "portfolio", href: "https://portfolio.fbold.dev/" },
-  { name: "blog", href: "https://blog.fbold.dev" },
-  { name: "tao", href: "https://tao.fbold.dev" },
+  { name: "blog", href: "/blog" },
 ]
 
-const miscButtons = [
-  { content: "github", href: "" },
-  // { content: "", href: "" },
-  // { content: "", href: "" },
-]
+const miscButtons = [{ content: "github", href: "https://github.com/fbold" }]
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body class="bg-surface text-primary font-main text-md">
-    <Meander />
-    <div
-      class="h-full w-full max-w-lg mx-auto flex flex-col items-center justify-center"
-    >
-      <div class="relative mx-20 flex flex-col gap-2">
-        <div class="flex w-full h-8 gap-2">
-          <div
-            class="text-center bg-surface border border-accent p-1 px-2 w-full"
-          >
-            <h1 class="">Hi, I'm Fred</h1>
-            <!-- This is the landing page, these are relevant links: -->
-          </div>
-          <button class="border border-accent aspect-square text-center p-0 text-lg"></button>
+<Layout>
+  <Meander />
+  <div
+    class="h-full w-full max-w-lg mx-auto flex flex-col items-center justify-center"
+  >
+    <div class="relative mx-20 flex flex-col gap-2">
+      <div class="flex w-full h-8 gap-2">
+        <div
+          class="text-center bg-surface border text-secondary border-accent p-1 px-2 w-full"
+        >
+          <h1 class="">Hi, I'm Fred</h1>
+        </div>
+        <!-- <div class="flex items-center justify-center border border-accent aspect-square text-center p-0 text-2xl bg-surface font-bold">✧</div> -->
+      </div>
+      <div
+        class="flex flex-col gap-2 bg-surface text-center text-xl items-center justify-center border border-accent p-6 px-10"
+      >
+        {
+          links.map((link) => (
+            <a
+              class="blur--link relative group  cursor-pointer w-min text-bg-d dark:text-bg no-underline"
+              href={link.href}
+            >
+              {link.name}
+                <!-- <span class="h-[6px] bg-surface w-full absolute top-[12.5px] block transition-[scale,opacity] duration-300 scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 origin-center" /> -->
+            </a>
+          ))
+        }
+      </div>
+      <div class="w-full h-8 flex gap-2 text-secondary">
+        {
+          miscButtons.map((b) => (
+            <a
+              type="button"
+              class="flex-grow p-2 bg-surface text-center items-center justify-center flex text-lg border border-accent h-8"
+              href={b.href}
+              target="_blank"
+            >
+              <span class="blur--link">{b.content}</span>
+            </a>
+          ))
+        }
+        <div
+          class="flex items-center justify-center text-sm flex-grow p-2 bg-surface border border-accent h-8"
+        >
+          🜃🜂🜄🜁
         </div>
         <div
-          class="flex flex-col gap-2 bg-surface text-secondary text-center text-xl items-center justify-center border border-accent p-6 px-10"
+          class="flex bg-surface text-lg items-center justify-center font-bold border border-accent aspect-square h-8"
         >
-          {
-            links.map((link) => (
-              <a
-                class="blur--link relative group  cursor-pointer w-min text-bg-d dark:text-bg no-underline"
-                href={link.href}
-              >
-                {link.name}
-                <!-- <span class="h-[6px] bg-surface w-full absolute top-[12.5px] block transition-[scale,opacity] duration-300 scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 origin-center" /> -->
-              </a>
-            ))
-          }
-        </div>
-        <div class="w-full h-8 flex gap-2">
-          {
-            miscButtons.map((b) => (
-              <a
-                type="button"
-                class="flex-grow p-2 bg-surface text-center items-center justify-center flex text-lg border border-accent h-8"
-                href={b.href}
-              >
-                <span class="blur--link">{b.content}</span>
-              </a>
-            ))
-          }
-          <button
-            type="button"
-            class="flex items-center justify-center text-sm flex-grow p-2 bg-surface border border-accent h-8"
-            >🜃🜂🜄🜁</button
-          >
-          <button
-            type="button"
-            class="dark:hidden bg-surface text-lg font-bold cursor-pointer ml-auto border border-accent aspect-square h-8"
-            onclick="toggledarkmode()">☾</button
-          >
-          <button
-            type="button"
-            onclick="togglelightmode()"
-            class="hidden bg-surface text-lg text-center font-bold cursor-pointer ml-auto border border-accent aspect-square h-8"
-            >☀︎</button
-          >
+          ☾
         </div>
       </div>
+      <div class="w-full h-5 flex gap-2 text-secondary">
+        <div
+          class="flex flex-grow items-center px-2 justify-center border border-accent"
+        >
+        <span class="-translate-y-[1px]">
+          ❀ ✿ ❁ ✾ ❋ ✿ ❀
+</span>
+        </div>
+        <a
+          class="flex-grow px-2 bg-surface text-center items-center justify-center flex text-xs border border-accent"
+          href="https://www.collletttivo.it/typefaces/necto-mono"
+          target="_blank"
+        >
+          <span class="blur--link -translate-y-[1px]">typeface</span>
+        </a>
+      </div>
     </div>
-  </body>
-</html>
-
-<script is:inline>
-  function toggledarkmode() {
-    console.log("dark")
-    document.querySelector("html")?.classList.add("dark")
-  }
-  function togglelightmode() {
-    document.querySelector("html")?.classList.remove("dark")
-  }
-</script>
+  </div>
+</Layout>
