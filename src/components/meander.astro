@@ -11,6 +11,10 @@
   const LINE_SEGMENT_COUNT = 100
   const LINE_SEGMENT_COUNT_VARIANCE = 10
 
+  let allEnded = false
+  let animating = false
+  let lines = []
+
   window.addEventListener("load", () => {
     const canvas = document.getElementById("animated-canvas")
     const ctx = canvas.getContext("2d")
@@ -18,45 +22,74 @@
     const resizeCanvas = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
+
+      // recalculate how many lines and restart animation loop
+      lines = []
+      generateLines()
+      if (animating) return
+      animating = true
+      allEnded = false
+      animate()
+    }
+
+    const generateLines = () => {
+      const lateralLines = Math.floor(canvas.height * 2 * LINE_DENSITY)
+      const verticalLines = Math.floor(canvas.width * 2 * LINE_DENSITY)
+
+      for (let i = 0; i < lateralLines; i++) {
+        if (i < lateralLines / 2) {
+          const x = 0
+          const y = (i / lateralLines) * 2 * canvas.height
+          const direction = [1, 0]
+          lines.push(new Line(x, y, direction))
+        } else {
+          const x = canvas.width
+          const y = ((i - lateralLines / 2) / lateralLines) * 2 * canvas.height
+          const direction = [-1, 0]
+          lines.push(new Line(x, y, direction))
+        }
+      }
+
+      for (let i = 0; i < verticalLines; i++) {
+        if (i < verticalLines / 2) {
+          const x = (i / verticalLines) * 2 * canvas.width
+          const y = 0
+          const direction = [0, 1]
+          lines.push(new Line(x, y, direction))
+        } else {
+          const x = ((i - verticalLines / 2) / verticalLines) * 2 * canvas.width
+          const y = canvas.height
+          const direction = [0, -1]
+          lines.push(new Line(x, y, direction))
+        }
+      }
+    }
+
+    let lastTime = 0
+    let deltaTime = 0
+
+    function animate(time) {
+      deltaTime = (time - lastTime) / 1000 // in seconds
+      lastTime = time
+
+      if (!allEnded) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        allEnded = true
+        lines.forEach((line) => {
+          allEnded = allEnded && line.end
+          line.draw(deltaTime)
+        })
+        console.log("animating")
+        requestAnimationFrame(animate)
+      } else {
+        animating = false
+        console.log("set animating to false")
+      }
     }
 
     resizeCanvas()
     window.addEventListener("resize", resizeCanvas)
-
-    const lines = []
-
-    const lateralLines = Math.floor(canvas.height * 2 * LINE_DENSITY)
-    const verticalLines = Math.floor(canvas.width * 2 * LINE_DENSITY)
-
-    console.log("LATERAL", lateralLines, "VERTICAL", verticalLines)
-
-    for (let i = 0; i < lateralLines; i++) {
-      if (i < lateralLines / 2) {
-        const x = 0
-        const y = (i / lateralLines) * 2 * canvas.height
-        const direction = [1, 0]
-        lines.push(new Line(x, y, direction))
-      } else {
-        const x = canvas.width
-        const y = ((i - lateralLines / 2) / lateralLines) * 2 * canvas.height
-        const direction = [-1, 0]
-        lines.push(new Line(x, y, direction))
-      }
-    }
-
-    for (let i = 0; i < verticalLines; i++) {
-      if (i < verticalLines / 2) {
-        const x = (i / verticalLines) * 2 * canvas.width
-        const y = 0
-        const direction = [0, 1]
-        lines.push(new Line(x, y, direction))
-      } else {
-        const x = ((i - verticalLines / 2) / verticalLines) * 2 * canvas.width
-        const y = canvas.height
-        const direction = [0, -1]
-        lines.push(new Line(x, y, direction))
-      }
-    }
 
     function Line(x, y, directionIntent) {
       const origin = {
@@ -70,8 +103,13 @@
       this.vertices = []
       this.direction = directionIntent
       this.end = false
+
+      const proportionalSegmentCount = Math.min(
+        Math.floor(canvas.width / 10),
+        LINE_SEGMENT_COUNT,
+      )
       this.segmentCount =
-        LINE_SEGMENT_COUNT +
+        proportionalSegmentCount +
         Math.round(
           Math.random() * LINE_SEGMENT_COUNT_VARIANCE -
             LINE_SEGMENT_COUNT_VARIANCE / 2,
@@ -103,20 +141,6 @@
         ctx.beginPath()
         ctx.lineWidth = 2
         ctx.strokeStyle = "#4A5D46"
-        const centerX = canvas.width / 2
-        const centerY = canvas.height / 2
-        // const g = ctx.createRadialGradient(
-        //   centerX,
-        //   centerY,
-        //   150,
-        //   centerX,
-        //   centerY,
-        //   canvas.width,
-        // )
-        // g.addColorStop(0, `rgba(${0xa1},${0xcc},${0xa4},0.2)`) // opaque
-        // g.addColorStop(0.3, `rgba(${0xa1},${0xcc},${0xa4},1)`) // opaque
-        // g.addColorStop(1, `rgba(${0xa1},${0xcc},${0xa4},1)`) // opaque
-        // ctx.strokeStyle = g
         ctx.moveTo(origin.x, origin.y)
 
         this.vertices.forEach(([vx, vy]) => {
@@ -134,28 +158,5 @@
         }
       }
     }
-
-    let allEnded = false
-    let lastTime = 0
-    let deltaTime = 0
-
-    function animate(time) {
-      deltaTime = (time - lastTime) / 1000 // in seconds
-      lastTime = time
-
-      if (!allEnded) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-        allEnded = true
-        lines.forEach((line) => {
-          allEnded = allEnded && line.end
-          line.draw(deltaTime)
-        })
-        console.log("animating")
-        requestAnimationFrame(animate)
-      }
-    }
-
-    animate()
   })
 </script>
