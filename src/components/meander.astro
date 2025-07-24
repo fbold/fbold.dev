@@ -6,9 +6,9 @@
 
 <script is:inline>
   const LINE_DENSITY = 0.05
-  const LINE_SPEED = 70
+  const LINE_SPEED = 45
   const LINE_SEGMENT = 10
-  const LINE_SEGMENT_COUNT = 100
+  const LINE_SEGMENT_COUNT_MAX = 70
   const LINE_SEGMENT_COUNT_VARIANCE = 10
 
   let allEnded = false
@@ -116,9 +116,10 @@
       this.end = false
 
       const proportionalSegmentCount = Math.min(
-        Math.floor(canvas.width / 10),
-        LINE_SEGMENT_COUNT,
+        Math.floor(canvas.width / 14),
+        LINE_SEGMENT_COUNT_MAX,
       )
+      console.log(proportionalSegmentCount)
       this.segmentCount =
         proportionalSegmentCount +
         Math.round(
