@@ -18,16 +18,22 @@ const miscButtons = [{ content: "github", href: "https://github.com/fbold" }]
     class="h-full w-full max-w-lg mx-auto flex flex-col items-center justify-center"
   >
     <div class="relative mx-20 flex flex-col gap-2">
-      <div class="flex w-full h-8 gap-2">
-        <div
-          class="text-center bg-surface border text-secondary border-accent p-1 px-2 w-full"
-        >
-          <h1 class="">Hi, I'm Fred</h1>
-        </div>
-        <!-- <div class="flex items-center justify-center border border-accent aspect-square text-center p-0 text-2xl bg-surface font-bold">✧</div> -->
-      </div>
+      <!-- <div class="flex w-full h-8 gap-2"> -->
       <div
-        class="flex flex-col gap-2 bg-surface text-center text-xl items-center justify-center border border-accent p-6 px-10"
+        class="text-center bg-surface -translate-y-1/2 top-0 absolute left-1/2 -translate-x-1/2 text-secondary border border-accent p-1 px-3"
+      >
+        <!-- <span -->
+        <!--   class="absolute top-0 right-0 h-[calc(50%+0.5px)] w-[1px] bg-accent" -->
+        <!-- ></span> -->
+        <!-- <span -->
+        <!--   class="absolute top-0 left-0 h-[calc(50%+0.5px)] w-[1px] bg-accent" -->
+        <!-- ></span> -->
+        <h1 class="text-nowrap">◊ WELCOME ◊</h1>
+      </div>
+      <!-- <div class="flex items-center justify-center border border-accent aspect-square text-center p-0 text-2xl bg-surface font-bold">✧</div> -->
+      <!-- </div> -->
+      <div
+        class="flex flex-col gap-2 bg-surface text-center text-xl items-center justify-center border border-accent p-6 pt-8 px-10"
       >
         {
           links.map((link) => (
@@ -36,7 +42,6 @@ const miscButtons = [{ content: "github", href: "https://github.com/fbold" }]
               href={link.href}
             >
               {link.name}
-                <!-- <span class="h-[6px] bg-surface w-full absolute top-[12.5px] block transition-[scale,opacity] duration-300 scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 origin-center" /> -->
             </a>
           ))
         }
@@ -46,7 +51,7 @@ const miscButtons = [{ content: "github", href: "https://github.com/fbold" }]
           miscButtons.map((b) => (
             <a
               type="button"
-              class="flex-grow p-2 bg-surface text-center items-center justify-center flex text-lg border border-accent h-8"
+              class="flex-grow p-2 bg-surface text-center items-center justify-center flex text-base border border-accent h-8"
               href={b.href}
               target="_blank"
             >
@@ -67,11 +72,11 @@ const miscButtons = [{ content: "github", href: "https://github.com/fbold" }]
       </div>
       <div class="w-full h-5 flex gap-2 text-secondary">
         <div
-          class="flex flex-grow items-center px-2 justify-center border border-accent"
+          class="flex flex-grow items-center px-2 justify-center bg-surface border border-accent"
         >
-        <span class="-translate-y-[1px]">
-          ❀ ✿ ❁ ✾ ❋ ✿ ❀
-</span>
+          <span class="-translate-y-[0.5px] text-nowrap text-sm">
+            ✿ ❁ ✾ ❋ ✽ ✿
+          </span>
         </div>
         <a
           class="flex-grow px-2 bg-surface text-center items-center justify-center flex text-xs border border-accent"
