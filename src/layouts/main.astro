@@ -8,6 +8,15 @@ import "../styles/global.css"
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <title>🜃🜂🜄🜁</title>
+    {
+      import.meta.env.PROD && (
+        <script
+          defer
+          src="https://umami.fbold.dev/script.js"
+          data-website-id="9dd31f09-dc94-4273-aa11-dfc8f6628847"
+        />
+      )
+    }
   </head>
   <body
     class="bg-surface text-primary font-main text-md flex items-center justify-center"
