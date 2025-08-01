@@ -8,12 +8,18 @@ import Link from "@/components/ui/link.astro"
     <div class="flex flex-col gap-2 m-10 md:mx-0 text-sm md:text-base">
       <div class="w-full flex flex-row justify-between">
         <Link href="/">← take me home</Link>
-        <button
-          class="text-secondary underline text-sm cursor-pointer"
-          id="semicolon-toggler"
-          >toggle semicolons <span class="group relative"
-            >[i]<div
-              class="hidden group-hover:block absolute text-primary top-full p-2 bg-surface border border-accent transition-opacity"
+        <div class="block md:hidden spacer-- w-1/6"></div>
+        <div class="inline text-end">
+          <button
+            class="text-secondary text-sm cursor-pointer text-end"
+            id="semicolon-toggler">toggle semicolons</button
+          ><span
+            class="group relative cursor-pointer text-secondary inline"
+            tabindex="0"
+          >
+            [i]<div
+              tabindex="0"
+              class="hidden text-sm group-focus:block group-hover:block absolute text-primary top-full p-2 bg-surface border border-accent transition-opacity"
             >
               <Link
                 href="https://youtu.be/TY7sjo7sW1I?si=6aFVB3VOL5ghhykP&t=191"
@@ -21,8 +27,8 @@ import Link from "@/components/ui/link.astro"
               > to my attention semicolons are not everyone's cup of tea. I have
               therefore made them optional.
             </div></span
-          ></button
-        >
+          >
+        </div>
       </div>
       <h1 class="font-bold mt-3">Hi, I'm Fred, I care about...</h1>
       <!-- <p>I care about</p> -->
