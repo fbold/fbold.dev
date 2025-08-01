@@ -6,25 +6,40 @@ import Link from "@/components/ui/link.astro"
 <Layout>
   <div class="w-full max-w-lg m-auto flex items-center justify-center">
     <div class="flex flex-col gap-2 m-10 md:mx-0 text-sm md:text-base">
-      <Link href="/">← take me home</Link>
-      <h1 class="font-bold mt-3">
-        I'm Fred and, among other things, I'm a developer,
-      </h1>
-      <p>I enjoy making interesting websites.</p>
+      <div class="w-full flex flex-row justify-between">
+        <Link href="/">← take me home</Link>
+        <button
+          class="text-secondary underline text-sm cursor-pointer"
+          id="semicolon-toggler"
+          >toggle semicolons <span class="group relative"
+            >[i]<div
+              class="hidden group-hover:block absolute text-primary top-full p-2 bg-surface border border-accent transition-opacity"
+            >
+              <Link
+                href="https://youtu.be/TY7sjo7sW1I?si=6aFVB3VOL5ghhykP&t=191"
+                target="_blank">It was brought</Link
+              > to my attention semicolons are not everyone's cup of tea. I have
+              therefore made them optional.
+            </div></span
+          ></button
+        >
+      </div>
+      <h1 class="font-bold mt-3">Hi, I'm Fred, I care about...</h1>
+      <!-- <p>I care about</p> -->
+      <p>→ Making websites.</p>
       <p>
-        I love typography as an appreciator; one day I will make my own
+        → Typography<span class="semicolon">. O</span>ne day I will make my own
         typeface.
       </p>
       <p>
-        I like sewing and taking photos; one day I will publish my photos on a
-        nice little website.
+        → Sewing and taking photos<span class="semicolon">. O</span>ne day I
+        will publish my photos on a nice website.
       </p>
       <p>
-        I love many movies (my <Link href="https://letterboxd.com/fbold/"
+        → Movies (me on <Link href="https://letterboxd.com/fbold/"
           >letterboxd</Link
-        >); one day I will make my own movie.
+        >)<span class="semicolon">. O</span>ne day I will make my own movie.
       </p>
-      <p>Everything is a work in progress.</p>
       <p class="text-sm mt-2">
         If you would like to work with me please get in touch via the contact
         form on my <a
@@ -39,3 +54,24 @@ import Link from "@/components/ui/link.astro"
     </div>
   </div>
 </Layout>
+
+<script>
+  const semicolonsBtn = document.getElementById("semicolon-toggler")
+
+  const semicolons = document.getElementsByClassName("semicolon")
+
+  semicolonsBtn?.addEventListener("click", () => {
+    let item
+    for (let i = 0; i < semicolons.length; i++) {
+      item = semicolons.item(i)
+      if (!item) continue
+      console.log(item.innerHTML.match(/:/))
+
+      if (item.innerHTML.match(/;/)?.length)
+        item.innerHTML = item.innerHTML.replace(";", ".").toUpperCase()
+      else {
+        item.innerHTML = item.innerHTML.replace(/[:.]/, ";").toLowerCase()
+      }
+    }
+  })
+</script>

@@ -44,14 +44,14 @@ a {
 
 a:hover.blur--link {
 	filter: blur(3px);
-	transition: ease-in-out 300ms;
+	transition: ease-in-out 150ms;
 }
 
 a .blur--link {
-	transition: all ease-in-out 300ms;
+	transition: all ease-in-out 150ms;
 }
 
 a:hover .blur--link {
 	filter: blur(3px);
-	transition: ease-in-out 300ms;
+	transition: ease-in-out 150ms;
 }

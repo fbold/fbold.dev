@@ -1,5 +1,7 @@
 ---
-const { href } = Astro.props
+const { href, target = "" } = Astro.props
 ---
 
-<a href={href} class="blur--link text-secondary cursor-pointer"><slot /></a>
+<a href={href} target={target} class="blur--link text-secondary cursor-pointer"
+  ><slot /></a
+>
